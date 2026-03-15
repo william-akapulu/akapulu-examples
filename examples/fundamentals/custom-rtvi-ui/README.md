@@ -294,7 +294,6 @@ src/app/demo/page.tsx
 */
 function CustomRtviDemo() {
 
-
   // Frontend receives room credentials from the API route response.
   // startData contains the room_url and token, returned by the Akapulu /connect endpoint (Step 3 in the Akapulu Call Lifecycle Diagram)
   const startData = await startResponse.json();
@@ -328,14 +327,19 @@ const dailyTransport = client.transport as DailyTransport;
 
 // Pipecat provider exposes app-level realtime client state.
 <PipecatClientProvider client={client}>
+
   // Daily provider exposes media and participant state from the Daily call object.
   <DailyProvider callObject={dailyTransport.dailyCallClient}>
+
     // Your UI component that consumes both Pipecat and Daily context.
     // CustomRtviDemo can use usePipecatClient() and useDaily() because of the providers above ^.
     <CustomRtviDemo /> 
+
   </DailyProvider>
+
   // Audio output element for assistant voice playback.
   <PipecatClientAudio />
+
 </PipecatClientProvider>
 ```
 

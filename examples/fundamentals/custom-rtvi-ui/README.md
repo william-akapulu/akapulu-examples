@@ -74,7 +74,7 @@ Everything else is standard project scaffolding for this Next.js app.
 
 ### Akapulu Call Lifecycle
 
-Akapulu conversations start by calling the **Connect API**:
+Akapulu conversations start by calling the **Connect API** (see [connect docs](https://akapulu.mintlify.app/api-reference/conversations/connect)):
 
 - **Endpoint**: `POST https://akapulu.com/api/conversations/connect/`
 - **Auth**: `Authorization: Bearer <AKAPULU_API_KEY>`
@@ -688,7 +688,7 @@ function CustomRtviDemo() {
 The bot can take around 10 to 15 seconds to fully initialize and become ready.
 We recommend showing a loading UI for good user experience.
 
-Updates endpoint:
+Updates endpoint (see [updates docs](https://akapulu.mintlify.app/api-reference/conversations/updates)):
 
 - `GET https://akapulu.com/api/conversations/<conversation_session_id>/updates/`
 - Output fields:

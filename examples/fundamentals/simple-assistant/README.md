@@ -89,7 +89,7 @@ GIF showing how to create the scenario[^advanced-workflows]:
 
 `simple-assistant.py` is a minimal CLI example that:
 
-1. Calls the Akapulu `connect` API with your scenario ID.
+1. Calls the Akapulu `connect` API with your scenario ID (see [connect docs](https://akapulu.mintlify.app/api-reference/conversations/connect)).
 2. Polls conversation setup updates until the bot is ready.
 3. Prints a tokenized Daily call URL you can open directly.
 

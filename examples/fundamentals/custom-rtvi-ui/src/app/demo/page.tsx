@@ -48,7 +48,7 @@ High-level architecture of this page:
 
 const DEMO_PAGE_TITLE = "Akapulu Custom UI Demo";
 // Scenario UUID from the dashboard ("Scenario details" section).
-const DEMO_SCENARIO_ID =  "<SCENARIO_ID>";
+const DEMO_SCENARIO_ID = "c50c9a85-c3ea-4e76-a921-e789ccb29e48"; //"<SCENARIO_ID>";
 // Variables injected at connect-time; keep keys aligned with your scenario.
 const DEMO_RUNTIME_VARS: Record<string, string> = {};
 // Set true to hide video surfaces and run as a voice-first UI.

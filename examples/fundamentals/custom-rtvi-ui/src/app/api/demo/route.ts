@@ -8,7 +8,7 @@ Why this exists:
 - Gives the demo a stable local endpoint (`/api/demo`) for both connect + updates.
 - Lets the frontend call one path while this route handles auth + upstream URLs.
 */
-const AKAPULU_API_BASE_URL = "https://akapulu/api";
+const AKAPULU_API_BASE_URL = "https://akapulu-dev.fly.dev/api";
 
 export async function POST(request: NextRequest) {
   // Server-side secret used to authenticate against the upstream API.

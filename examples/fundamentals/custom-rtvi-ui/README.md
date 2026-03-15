@@ -404,26 +404,11 @@ In plain terms:
 
 RTVI event names and payload patterns come from [callbacks and events](https://docs.pipecat.ai/client/js/api-reference/callbacks).
 
+#### 5.1 Built-in Pipecat RTVI events
+
 `RTVIEvent` is Pipecat's built-in event enum. Pick an event name, register a handler with `client.on`, and remove it with `client.off` in cleanup.
 
 Built-in event objects are accessed directly in each handler:
-
-```typescript
-client.on(RTVIEvent.UserTranscript, (transcript: any) => {
-  const text = transcript.text;
-  const isFinal = transcript.final;
-});
-```
-
-ServerMessage objects are accessed through the `message` object:
-
-```typescript
-client.on(RTVIEvent.ServerMessage, (message: any) => {
-  const messageType = message.type;
-  const functionName = message.function_name;
-  const body = message.body;
-});
-```
 
 ```typescript
 /*
@@ -455,8 +440,6 @@ Some built-in Pipecat events:
 - `RTVIEvent.BotStoppedSpeaking`
 - etc
 
-#### 5.1 Built-in Pipecat RTVI events
-
 ##### Transcript events
 
 - `RTVIEvent.UserTranscript`
@@ -476,15 +459,19 @@ function CustomRtviDemo() {
 
     // User transcript payload fields.
     const handleUserTranscript = (transcript: { text?: string; final?: boolean }) => {
+
       const text = transcript.text || "";
       const isFinal = transcript.final === true;
       // TODO: Update your user transcript UI with `text`.
+
     };
 
     // Bot transcript payload fields.
     const handleBotTranscript = (transcript: { text?: string }) => {
+
       const text = transcript.text || "";
       // TODO: Append `text` to your bot transcript UI.
+
     };
 
     // Subscribe.
@@ -498,7 +485,6 @@ function CustomRtviDemo() {
 
 - `RTVIEvent.UserStartedSpeaking`
 
-#### 5.2 Akapulu custom `ServerMessage` events
 
 ```typescript
 /*
@@ -510,17 +496,21 @@ import { RTVIEvent } from "@pipecat-ai/client-js";
 
 function CustomRtviDemo() {
   useEffect(() => {
-    // In backend Pipecat pipelines this typically originates from UserStartedSpeakingFrame.
-    // In frontend code you listen to RTVIEvent.UserStartedSpeaking.
+
     const handleUserStartedSpeaking = () => {
+
       // TODO: update listening UI state
       console.log("UserStartedSpeaking");
+
     };
 
     client.on(RTVIEvent.UserStartedSpeaking, handleUserStartedSpeaking);
   }, [client]);
 }
 ```
+
+#### 5.2 Akapulu custom `ServerMessage` events
+
 
 ```typescript
 /*

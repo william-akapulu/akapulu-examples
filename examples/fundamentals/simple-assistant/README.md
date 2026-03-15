@@ -3,20 +3,20 @@
 This example is the fastest way to run an Akapulu scenario from the command line.
 
 `simple-assistant.py` starts a conversation session, polls setup updates, and prints a ready-to-open Daily call URL. It is intentionally minimal so you can quickly validate your scenario setup before building a full custom UI.
-Under the hood, Akapulu uses [Daily](https://docs.daily.co) for WebRTC, so the link you open connects you directly to the live call session.
+Under the hood, Akapulu uses <a href="https://docs.daily.co" target="_blank" rel="noopener noreferrer">Daily</a> for WebRTC, so the link you open connects you directly to the live call session.
 
 ## Prerequisite: Create a Scenario
 
 Before running this example, create a scenario in the Akapulu web app:
 
-1. Go to [akapulu.com/scenarios](https://akapulu.com/scenarios) and click `Create+`.
+1. Go to <a href="https://akapulu.com/scenarios" target="_blank" rel="noopener noreferrer">akapulu.com/scenarios</a> and click `Create+`.
    - This opens the scenario builder where you define the assistant behavior and flow.
 2. Enter any scenario name, such as `Simple Assistant`.
    - The scenario name is your internal label for identifying this configuration later.
 3. Set STT keywords to `Akapulu`.
    - STT(Speech to text) keywords help speech recognition catch important terms that may be harder to detect otherwise (for example, company names like `Akapulu`).
 4. Open the `Avatars` tab and select any avatar.
-   - You can also browse available catalog avatars at [akapulu.com/catalog](https://akapulu.com/catalog).
+   - You can also browse available catalog avatars at <a href="https://akapulu.com/catalog" target="_blank" rel="noopener noreferrer">akapulu.com/catalog</a>.
    - The selected avatar is the visual persona used when this scenario runs in video mode.
 5. Open the `Nodes` tab and click `+ Add Node` in the lower-right corner.
    - Nodes are the building blocks of your conversation flow.
@@ -89,7 +89,7 @@ GIF showing how to create the scenario[^advanced-workflows]:
 
 `simple-assistant.py` is a minimal CLI example that:
 
-1. Calls the Akapulu [`connect` API](https://akapulu.mintlify.app/api-reference/conversations/connect) with your scenario ID.
+1. Calls the Akapulu <a href="https://akapulu.mintlify.app/api-reference/conversations/connect" target="_blank" rel="noopener noreferrer"><code>connect</code> API</a> with your scenario ID.
 2. Polls conversation setup updates until the bot is ready.
 3. Prints a tokenized Daily call URL you can open directly.
 
@@ -97,10 +97,10 @@ It is designed to be a quick sanity check for scenario setup and end-to-end conn
 
 ## Run the Simple Assistant
 
-1. Open your scenario in the Akapulu web app at [akapulu.com/scenarios](https://akapulu.com/scenarios).
+1. Open your scenario in the Akapulu web app at <a href="https://akapulu.com/scenarios" target="_blank" rel="noopener noreferrer">akapulu.com/scenarios</a>.
 2. Copy the scenario ID (the UUID shown in the scenario detail page).
 3. Create an API key:
-   - Go to [akapulu.com/api-keys](https://akapulu.com/api-keys).
+   - Go to <a href="https://akapulu.com/api-keys" target="_blank" rel="noopener noreferrer">akapulu.com/api-keys</a>.
    - Click `Create API key`.
    - Enter a description.
    - Copy the actual API key value.

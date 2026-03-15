@@ -1,17 +1,17 @@
 # Custom UI (Next.js)
 
-This example shows how to build a custom frontend UI for Akapulu conversations using Next.js + [RTVI](https://docs.pipecat.ai/client/js/introduction).
+This example shows how to build a custom frontend UI for Akapulu conversations using Next.js + <a href="https://docs.pipecat.ai/client/js/introduction" target="_blank" rel="noopener noreferrer">RTVI</a>.
 
-This example uses two core building blocks that work together. First, [Pipecat](https://docs.pipecat.ai/getting-started/introduction) is the open-source realtime conversation layer (maintained by Daily and the community), and your frontend talks to it through [PipecatClient](https://docs.pipecat.ai/client/js/api-reference/client-constructor) and [RTVI events](https://docs.pipecat.ai/client/js/api-reference/callbacks). Second, [Daily](https://docs.daily.co) is the WebRTC media layer that carries live audio and video.
+This example uses two core building blocks that work together. First, <a href="https://docs.pipecat.ai/getting-started/introduction" target="_blank" rel="noopener noreferrer">Pipecat</a> is the open-source realtime conversation layer (maintained by Daily and the community), and your frontend talks to it through <a href="https://docs.pipecat.ai/client/js/api-reference/client-constructor" target="_blank" rel="noopener noreferrer">PipecatClient</a> and <a href="https://docs.pipecat.ai/client/js/api-reference/callbacks" target="_blank" rel="noopener noreferrer">RTVI events</a>. Second, <a href="https://docs.daily.co" target="_blank" rel="noopener noreferrer">Daily</a> is the WebRTC media layer that carries live audio and video.
 
 Akapulu uses Daily behind the scenes to run the live call connection. In simple terms: Pipecat handles conversation state and realtime events, and Daily handles live audio and video. Instead of relying on Daily UI, this example shows how to build your own custom UI using that setup, so you can control call controls, recording, transcripts, tool-call displays, and stage transitions in one place.
 
 ## Quick Start
 
 1. Log in to Akapulu and create a scenario.
-   - See [Simple Assistant guide](../simple-assistant/README.md#prerequisite-create-a-scenario).
+   - See <a href="../simple-assistant/README.md#prerequisite-create-a-scenario" target="_blank" rel="noopener noreferrer">Simple Assistant guide</a>.
 2. Create an API key and add it to your environment.
-   - See [Simple Assistant run section](../simple-assistant/README.md#run-the-simple-assistant).
+   - See <a href="../simple-assistant/README.md#run-the-simple-assistant" target="_blank" rel="noopener noreferrer">Simple Assistant run section</a>.
 3. Create `.env.local` from `.env.example` and set your API key.
 
 ```bash
@@ -74,7 +74,7 @@ Everything else is standard project scaffolding for this Next.js app.
 
 ### Akapulu Call Lifecycle
 
-Akapulu conversations start by calling the **[Connect API](https://akapulu.mintlify.app/api-reference/conversations/connect)**:
+Akapulu conversations start by calling the **<a href="https://akapulu.mintlify.app/api-reference/conversations/connect" target="_blank" rel="noopener noreferrer">Connect API</a>**:
 
 - **Endpoint**: `POST https://akapulu.com/api/conversations/connect/`
 - **Auth**: `Authorization: Bearer <AKAPULU_API_KEY>`
@@ -92,11 +92,11 @@ If successful, Akapulu returns:
 
 Akapulu uses that request to set everything up: it creates the Daily room and credentials, starts the AI bot, and has the bot join the Daily room.
 Your frontend then joins that same room using `room_url` and `token`.
-As noted above, this custom UI uses [Pipecat JavaScript client](https://docs.pipecat.ai/client/js/introduction) for app logic and [Daily](https://docs.daily.co/get-started) for media transport via [Pipecat Daily transport](https://docs.pipecat.ai/client/js/transports/daily).
+As noted above, this custom UI uses <a href="https://docs.pipecat.ai/client/js/introduction" target="_blank" rel="noopener noreferrer">Pipecat JavaScript client</a> for app logic and <a href="https://docs.daily.co/get-started" target="_blank" rel="noopener noreferrer">Daily</a> for media transport via <a href="https://docs.pipecat.ai/client/js/transports/daily" target="_blank" rel="noopener noreferrer">Pipecat Daily transport</a>.
 
 ### Pipecat plus Daily model
 
-[Daily](https://docs.daily.co/get-started) carries the live audio and video between participants:
+<a href="https://docs.daily.co/get-started" target="_blank" rel="noopener noreferrer">Daily</a> carries the live audio and video between participants:
 
 - user -> bot (your mic/camera stream)
 - bot -> user (the avatar's audio/video stream)
@@ -112,9 +112,9 @@ You can render a Daily call in a few different ways:
 - **Daily frame**: embed Daily's UI in your app
 - **Daily call object**: build a fully custom UI in your app
 
-For Akapulu, the recommended approach is the third option: a custom UI using a [Daily call object](https://docs.daily.co/reference/daily-js/factory-methods/create-call-object), [PipecatClient](https://docs.pipecat.ai/client/js/api-reference/client-constructor), and [RTVI events](https://docs.pipecat.ai/client/js/api-reference/callbacks). That is what this example demonstrates.
+For Akapulu, the recommended approach is the third option: a custom UI using a <a href="https://docs.daily.co/reference/daily-js/factory-methods/create-call-object" target="_blank" rel="noopener noreferrer">Daily call object</a>, <a href="https://docs.pipecat.ai/client/js/api-reference/client-constructor" target="_blank" rel="noopener noreferrer">PipecatClient</a>, and <a href="https://docs.pipecat.ai/client/js/api-reference/callbacks" target="_blank" rel="noopener noreferrer">RTVI events</a>. That is what this example demonstrates.
 
-If you want deeper implementation details, see [Pipecat transport overview](https://docs.pipecat.ai/client/js/transports/transport) and [Pipecat Daily transport docs](https://docs.pipecat.ai/client/js/transports/daily).
+If you want deeper implementation details, see <a href="https://docs.pipecat.ai/client/js/transports/transport" target="_blank" rel="noopener noreferrer">Pipecat transport overview</a> and <a href="https://docs.pipecat.ai/client/js/transports/daily" target="_blank" rel="noopener noreferrer">Pipecat Daily transport docs</a>.
 
 ### Akapulu Call Lifecycle Diagram
 
@@ -147,8 +147,8 @@ flowchart TD
 
 ### RTVI event model
 
-In this architecture, **[RTVI](https://docs.pipecat.ai/client/js/introduction)** is the real-time event stream for conversation state.
-It is separate from media transport. Daily carries audio and video, while Pipecat surfaces RTVI events your UI can react to through [callbacks and events](https://docs.pipecat.ai/client/js/api-reference/callbacks).
+In this architecture, **<a href="https://docs.pipecat.ai/client/js/introduction" target="_blank" rel="noopener noreferrer">RTVI</a>** is the real-time event stream for conversation state.
+It is separate from media transport. Daily carries audio and video, while Pipecat surfaces RTVI events your UI can react to through <a href="https://docs.pipecat.ai/client/js/api-reference/callbacks" target="_blank" rel="noopener noreferrer">callbacks and events</a>.
 
 Akapulu streams RTVI events to the frontend for things like:
 
@@ -179,13 +179,13 @@ flowchart LR
 
 So conceptually:
 
-- **[Pipecat client](https://docs.pipecat.ai/client/js/introduction)** is the app level realtime client API.
+- **<a href="https://docs.pipecat.ai/client/js/introduction" target="_blank" rel="noopener noreferrer">Pipecat client</a>** is the app level realtime client API.
 - **Daily WebRTC** carries media tracks.
-- **[RTVI](https://docs.pipecat.ai/client/js/introduction)** carries conversation events through the Pipecat layer.
+- **<a href="https://docs.pipecat.ai/client/js/introduction" target="_blank" rel="noopener noreferrer">RTVI</a>** carries conversation events through the Pipecat layer.
 - **The frontend UI** renders both into a custom experience.
 
 This Next.js project is an example of that architecture: it shows one way to render a Daily video call UI and consume a custom RTVI event stream in a custom interface.
-If you want deeper Daily details, see the [Daily call client docs](https://docs.daily.co/reference/daily-js/daily-call-client) and [participants API docs](https://docs.daily.co/reference/daily-js/instance-methods/participants).
+If you want deeper Daily details, see the <a href="https://docs.daily.co/reference/daily-js/daily-call-client" target="_blank" rel="noopener noreferrer">Daily call client docs</a> and <a href="https://docs.daily.co/reference/daily-js/instance-methods/participants" target="_blank" rel="noopener noreferrer">participants API docs</a>.
 
 
 ## Code walkthrough `page.tsx`
@@ -197,7 +197,7 @@ If you want deeper Daily details, see the [Daily call client docs](https://docs.
 
 The page creates one `PipecatClient` instance and wires it to `DailyTransport`.
 Your app code talks to `PipecatClient`, while Daily handles the underlying WebRTC media transport.
-See [client constructor](https://docs.pipecat.ai/client/js/api-reference/client-constructor) and [Daily transport](https://docs.pipecat.ai/client/js/transports/daily) docs for these two pieces.
+See <a href="https://docs.pipecat.ai/client/js/api-reference/client-constructor" target="_blank" rel="noopener noreferrer">client constructor</a> and <a href="https://docs.pipecat.ai/client/js/transports/daily" target="_blank" rel="noopener noreferrer">Daily transport</a> docs for these two pieces.
 
 ```typescript
 /*
@@ -233,7 +233,7 @@ useEffect(() => {
 
 On start, the frontend first calls `/api/demo` to get connection credentials.
 After that response returns `room_url` and `token`, it joins the Daily call via `client.connect`.
-This `connect` flow is documented in [client methods](https://docs.pipecat.ai/client/js/api-reference/client-methods#connect).
+This `connect` flow is documented in <a href="https://docs.pipecat.ai/client/js/api-reference/client-methods#connect" target="_blank" rel="noopener noreferrer">client methods</a>.
 
 ```typescript
 /*
@@ -310,7 +310,7 @@ function CustomRtviDemo() {
 
 `PipecatClientProvider` is the top level provider.
 This is the core wiring that allows the same page to use Daily call state and RTVI connected client state together.
-For event handling patterns, see [callbacks and events](https://docs.pipecat.ai/client/js/api-reference/callbacks).
+For event handling patterns, see <a href="https://docs.pipecat.ai/client/js/api-reference/callbacks" target="_blank" rel="noopener noreferrer">callbacks and events</a>.
 
 ```typescript
 /*
@@ -349,8 +349,8 @@ Because `CustomRtviDemo` is wrapped in both providers, it can read both conversa
 
 - From `PipecatClientProvider client={client}`
   - Access the shared Pipecat client with `usePipecatClient()`
-  - Call [client methods](https://docs.pipecat.ai/client/js/api-reference/client-methods) like `connect`, `disconnect`, and event subscriptions
-  - Handle RTVI events from [callbacks and events](https://docs.pipecat.ai/client/js/api-reference/callbacks), such as transcripts and server messages
+  - Call <a href="https://docs.pipecat.ai/client/js/api-reference/client-methods" target="_blank" rel="noopener noreferrer">client methods</a> like `connect`, `disconnect`, and event subscriptions
+  - Handle RTVI events from <a href="https://docs.pipecat.ai/client/js/api-reference/callbacks" target="_blank" rel="noopener noreferrer">callbacks and events</a>, such as transcripts and server messages
 
 ```typescript
 /*
@@ -402,7 +402,7 @@ In plain terms:
 
 ### 5. RTVIEvent reference
 
-RTVI event names and payload patterns come from [callbacks and events](https://docs.pipecat.ai/client/js/api-reference/callbacks).
+RTVI event names and payload patterns come from <a href="https://docs.pipecat.ai/client/js/api-reference/callbacks" target="_blank" rel="noopener noreferrer">callbacks and events</a>.
 
 #### 5.1 Built-in Pipecat RTVI events
 
@@ -688,7 +688,7 @@ function CustomRtviDemo() {
 The bot can take around 10 to 15 seconds to fully initialize and become ready.
 We recommend showing a loading UI for good user experience.
 
-**[Updates endpoint](https://akapulu.mintlify.app/api-reference/conversations/updates)**:
+**<a href="https://akapulu.mintlify.app/api-reference/conversations/updates" target="_blank" rel="noopener noreferrer">Updates endpoint</a>**:
 
 - `GET https://akapulu.com/api/conversations/<conversation_session_id>/updates/`
 - Output fields:
@@ -735,7 +735,7 @@ async function waitForCallReady(conversationSessionId: string) {
 
 Note: in this demo app, the frontend calls the intermediate local route `GET /api/demo?conversation_session_id=...`, and that route forwards the request to the Akapulu endpoint above so the API key stays server side.
 
-If you add startup failure handling around `connect` or start routes, review [errors](https://docs.pipecat.ai/client/js/api-reference/errors) and `connect` behavior in [client methods](https://docs.pipecat.ai/client/js/api-reference/client-methods#connect).
+If you add startup failure handling around `connect` or start routes, review <a href="https://docs.pipecat.ai/client/js/api-reference/errors" target="_blank" rel="noopener noreferrer">errors</a> and `connect` behavior in <a href="https://docs.pipecat.ai/client/js/api-reference/client-methods#connect" target="_blank" rel="noopener noreferrer">client methods</a>.
 
 ### 7. Recording
 
@@ -941,4 +941,4 @@ export default function DemoPage() {
 
 
 
-Custom UI implementations are available on our enterprise plan. See [akapulu.com/pricing](https://akapulu.com/pricing).
+Custom UI implementations are available on our enterprise plan. See <a href="https://akapulu.com/pricing" target="_blank" rel="noopener noreferrer">akapulu.com/pricing</a>.

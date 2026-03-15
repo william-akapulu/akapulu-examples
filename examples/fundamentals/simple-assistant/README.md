@@ -78,11 +78,11 @@ You can also paste the full node config directly: in the `Nodes` tab, click the 
    - Copy the value shown right below `Scenario details`.
    - The scenario ID is the UUID used by API clients (like this simple assistant script) to start conversations with this scenario.
 
-GIF showing how to create the scenario:
+GIF showing how to create the scenario[^advanced-workflows]:
 
 ![GIF showing how to create a scenario](./media/Scenario-Creation-2x.gif)
 
-_Footnote (advanced workflows): This quickstart uses one node so you can get running in minutes. In production scenarios, you will usually create multiple nodes for different stages of the conversation (for example: greeting, qualification, knowledge retrieval, objection handling, and wrap-up), then connect them with transitions so the assistant can branch based on user intent. You can also attach tools to specific nodes, such as HTTP endpoint tools for CRM/workflow/API actions, RAG knowledge bases for grounded answers from your docs, and vision tools when you need image understanding. A common pattern is to keep each node focused on one job with a clear task message, and only enable the tools and data sources needed for that stage._
+[^advanced-workflows]: This quickstart uses one node so you can get running in minutes. In production scenarios, you will usually create multiple nodes for different stages of the conversation (for example: greeting, qualification, knowledge retrieval, objection handling, and wrap-up), then connect them with transitions so the assistant can branch based on user intent. You can also attach tools to specific nodes, such as HTTP endpoint tools for CRM/workflow/API actions, RAG knowledge bases for grounded answers from your docs, and vision tools when you need image understanding. A common pattern is to keep each node focused on one job with a clear task message, and only enable the tools and data sources needed for that stage.
 
 ## What `simple-assistant.py` Does
 

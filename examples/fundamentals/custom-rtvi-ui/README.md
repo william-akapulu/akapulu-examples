@@ -2,7 +2,9 @@
 
 This example shows how to build a custom frontend UI for Akapulu conversations using Next.js + [RTVI](https://docs.pipecat.ai/client/js/introduction).
 
-Under the hood, Akapulu uses [Daily](https://docs.daily.co) for WebRTC. Instead of relying on Daily UI, with this example you use [PipecatClient](https://docs.pipecat.ai/client/js/api-reference/client-constructor) with [DailyTransport](https://docs.pipecat.ai/client/js/transports/daily) to drive your own custom UI around the live session and control the full experience: call controls, recording triggers, and how realtime events are presented in your app, including transcripts, function/tool calls, and flow node transitions.
+This example uses two core building blocks that work together. First, [Pipecat](https://www.pipecat.ai/) is the open-source realtime conversation layer (maintained by Daily and the community), and your frontend talks to it through [PipecatClient](https://docs.pipecat.ai/client/js/api-reference/client-constructor) and [RTVI events](https://docs.pipecat.ai/client/js/api-reference/callbacks). Second, [Daily](https://docs.daily.co) is the WebRTC media layer that carries live audio and video.
+
+Akapulu uses Daily behind the scenes to run the live call connection. In simple terms: Pipecat handles conversation state and realtime events, and Daily handles live audio and video. Instead of relying on Daily UI, this example shows how to build your own custom UI using that setup, so you can control call controls, recording, transcripts, tool-call displays, and stage transitions in one place.
 
 ## Quick Start
 
@@ -40,8 +42,7 @@ Replace `DEMO_SCENARIO_ID` with your scenario UUID.
 5. Install dependencies and start the dev server.
 
 ```bash
-npm install
-npm run dev
+npm install && npm run dev
 ```
 
 6. Open `http://localhost:3000/demo` and click `Start Call`.

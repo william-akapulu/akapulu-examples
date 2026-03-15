@@ -537,7 +537,15 @@ function CustomRtviDemo() {
 ##### Event types and payloads
 
 Akapulu sends custom runtime events through `RTVIEvent.ServerMessage`.
-In `handleServerMessage(message)`, these are the `message.type` values and `message` payload shapes used in this project:
+When you subscribe to `RTVIEvent.ServerMessage`, the value passed into your callback is the payload object:
+
+```typescript
+client.on(RTVIEvent.ServerMessage, (message) => {
+  console.log(message.type);
+});
+```
+
+These are the `message.type` values and payload shapes used in this project:
 
 - `flow-node-changed`
   - `message.type`: `"flow-node-changed"`
@@ -559,9 +567,6 @@ In `handleServerMessage(message)`, these are the `message.type` values and `mess
   - `message.type`: `"http"`
   - `message payload`: `{ function_name: "<function name>", body: {<...args>} }`
 
-- `call_timeout`
-  - `message.type`: `"call_timeout"`
-  - `message payload`: `{ reason: "<reason>" }`
 
 
 ##### Stage transition events

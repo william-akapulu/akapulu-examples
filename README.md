@@ -5,9 +5,6 @@
 ## Examples
 
 Akapulu helps you build conversational avatar experiences with real-time voice and video.
-For production use, we recommend building a custom RTVI UI so you have full control over experience and behavior.
-
-This repo contains focused examples that start with core building blocks.
 
 ## Structure
 

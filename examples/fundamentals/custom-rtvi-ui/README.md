@@ -549,30 +549,31 @@ These are the `message.type` values and payload shapes used in this project:
 
 - `flow-node-changed`
   - `message.type`: `"flow-node-changed"`
-  - `message payload`: `{ node: "<new node name>" }`
+  - `message.node`: `"<new node name>"`
 
 - `bot-speaking-state`
   - `message.type`: `"bot-speaking-state"`
-  - `message payload`: `{ state: "speaking" | "idle" }`
+  - `message.state`: `"speaking" | "idle"`
 
 - `RAG`
   - `message.type`: `"RAG"`
-  - `message payload`: `{ function_name: "<function name>", body: { query: "<RAG query>" } }`
+  - `message.function_name`: `"<function name>"`
+  - `message.body.query: "<RAG query>"`
 
 - `vision`
   - `message.type`: `"vision"`
-  - `message payload`: `{ function_name: "<function name>"}`
+  - `message.function_name`: `"<function name>"`
 
 - `http`
   - `message.type`: `"http"`
-  - `message payload`: `{ function_name: "<function name>", body: {<...args>} }`
+  - `message.function_name`: `"<function name>"`
+  - `message.body`: `{ <...args> }`
 
 
 
 ##### Stage transition events
 
 Stage transitions come through `RTVIEvent.ServerMessage` with `message.type === "flow-node-changed"`.
-This message channel maps to [custom messaging](https://docs.pipecat.ai/client/js/api-reference/messages).
 
 ```typescript
 /*
@@ -634,7 +635,7 @@ function CustomRtviDemo() {
 
 Tool calls come in through `RTVIEvent.ServerMessage`.
 Here is the minimal pattern for `RAG`, `vision`, and `http`:
-For server message structure and patterns, see [custom messaging](https://docs.pipecat.ai/client/js/api-reference/messages).
+
 
 ```typescript
 /*

@@ -2,7 +2,7 @@
 
 This example shows how to build a custom frontend UI for Akapulu conversations using Next.js + [RTVI](https://docs.pipecat.ai/client/js/introduction).
 
-This example uses two core building blocks that work together. First, [Pipecat](https://www.pipecat.ai/) is the open-source realtime conversation layer (maintained by Daily and the community), and your frontend talks to it through [PipecatClient](https://docs.pipecat.ai/client/js/api-reference/client-constructor) and [RTVI events](https://docs.pipecat.ai/client/js/api-reference/callbacks). Second, [Daily](https://docs.daily.co) is the WebRTC media layer that carries live audio and video.
+This example uses two core building blocks that work together. First, [Pipecat](https://docs.pipecat.ai/getting-started/introduction) is the open-source realtime conversation layer (maintained by Daily and the community), and your frontend talks to it through [PipecatClient](https://docs.pipecat.ai/client/js/api-reference/client-constructor) and [RTVI events](https://docs.pipecat.ai/client/js/api-reference/callbacks). Second, [Daily](https://docs.daily.co) is the WebRTC media layer that carries live audio and video.
 
 Akapulu uses Daily behind the scenes to run the live call connection. In simple terms: Pipecat handles conversation state and realtime events, and Daily handles live audio and video. Instead of relying on Daily UI, this example shows how to build your own custom UI using that setup, so you can control call controls, recording, transcripts, tool-call displays, and stage transitions in one place.
 
@@ -58,24 +58,17 @@ This GIF shows the custom RTVI UI flow at 2x speed.
 
 ```text
 .
-├── README.md
+├── README.md                                # This guide
 ├── src
 │   └── app
 │       ├── api
 │       │   └── demo
-│       │       └── route.ts
+│       │       └── route.ts                # Server route: proxies connect/updates
 │       ├── demo
-│       │   ├── Demo.module.css
-│       │   └── page.tsx
-│       └── page.tsx
+│       │   ├── Demo.module.css             # Styles for custom demo UI
+│       │   └── page.tsx                    # Main custom RTVI UI page
+│       └── page.tsx                        # Entry page linking to /demo
 ```
-
-Main stuff:
-
-- `src/app/demo/page.tsx` - the core custom UI: connect flow, call controls, transcript stream, stage changes, and tool-event toasts.
-- `src/app/api/demo/route.ts` - server proxy used by the demo UI for `connect` + `updates` (keeps API key server-side).
-- `src/app/demo/Demo.module.css` - all styles for the custom demo surface.
-- `src/app/page.tsx` - lightweight entry that points to `/demo`.
 
 Everything else is standard project scaffolding for this Next.js app.
 
@@ -86,10 +79,10 @@ Akapulu conversations start by calling the **Connect API**:
 - **Endpoint**: `POST https://akapulu.com/api/conversations/connect/`
 - **Auth**: `Authorization: Bearer <AKAPULU_API_KEY>`
 - **Input body**:
-  - `scenario_id` (required): which Akapulu scenario to run.
-  - `runtime_vars` (optional object): runtime values injected into the scenario.
-  - `voice_only_mode` (optional boolean): `true` for audio-only, `false` for video-capable mode.
-  - `custom_rtvi_connection` (optional boolean): use `true` in this example.
+  - `scenario_id`: which Akapulu scenario to run.
+  - `runtime_vars`: runtime values injected into the scenario.
+  - `voice_only_mode`: `true` for audio-only, `false` for video-capable mode.
+  - `custom_rtvi_connection`: set to `true` for this example
 
 If successful, Akapulu returns:
 
@@ -99,29 +92,29 @@ If successful, Akapulu returns:
 
 Akapulu uses that request to set everything up: it creates the Daily room and credentials, starts the AI bot, and has the bot join the Daily room.
 Your frontend then joins that same room using `room_url` and `token`.
-In this example, your app logic runs through the [Pipecat JavaScript client](https://docs.pipecat.ai/client/js/introduction), while [Daily](https://docs.daily.co/get-started) handles media transport underneath through the [Pipecat Daily transport](https://docs.pipecat.ai/client/js/transports/daily).
+As noted above, this custom UI uses [Pipecat JavaScript client](https://docs.pipecat.ai/client/js/introduction) for app logic and [Daily](https://docs.daily.co/get-started) for media transport via [Pipecat Daily transport](https://docs.pipecat.ai/client/js/transports/daily).
 
 ### Pipecat plus Daily model
 
-Akapulu uses [Daily](https://docs.daily.co/get-started) as the WebRTC provider for media, and this frontend uses [PipecatClient](https://docs.pipecat.ai/client/js/api-reference/client-constructor) as the app level realtime client API.
-In practice, Daily carries live audio and video between participants:
+[Daily](https://docs.daily.co/get-started) carries the live audio and video between participants:
 
 - user -> bot (your mic/camera stream)
 - bot -> user (the avatar's audio/video stream)
 
-Inside the Daily room there are two core participants:
+Inside the Daily room, there are two main participants:
 
 - **User participant** (the local browser user)
 - **AI avatar participant** (the assistant runtime joined as a remote participant)
 
-There are multiple ways to display a Daily call interface:
+You can render a Daily call in a few different ways:
 
-- Use the room URL directly with [Daily Prebuilt](https://docs.daily.co/prebuilt), like the simple assistant example approach.
-- Embed the call URL with a [Daily frame](https://docs.daily.co/reference/daily-js/factory-methods/create-frame).
-- Build a fully custom interface with a [Daily call object](https://docs.daily.co/reference/daily-js/factory-methods/create-call-object).
+- **Daily Prebuilt**: open a room URL in the hosted Daily UI (quickest setup)
+- **Daily frame**: embed Daily's UI in your app
+- **Daily call object**: build a fully custom UI in your app
 
-For Akapulu, the recommended method is a custom UI using a [Daily call object](https://docs.daily.co/reference/daily-js/factory-methods/create-call-object) with Pipecat and custom RTVI handling, which is what this example demonstrates.
-Use the [transport overview](https://docs.pipecat.ai/client/js/transports/transport) to understand lifecycle states, and the [Daily transport docs](https://docs.pipecat.ai/client/js/transports/daily) for transport-specific behavior.
+For Akapulu, the recommended approach is the third option: a custom UI using a [Daily call object](https://docs.daily.co/reference/daily-js/factory-methods/create-call-object), [PipecatClient](https://docs.pipecat.ai/client/js/api-reference/client-constructor), and [RTVI events](https://docs.pipecat.ai/client/js/api-reference/callbacks). That is what this example demonstrates.
+
+If you want deeper implementation details, see [Pipecat transport overview](https://docs.pipecat.ai/client/js/transports/transport) and [Pipecat Daily transport docs](https://docs.pipecat.ai/client/js/transports/daily).
 
 ### Akapulu Call Lifecycle Diagram
 

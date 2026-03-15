@@ -3,6 +3,7 @@
 This example is the fastest way to run an Akapulu scenario from the command line.
 
 `simple-assistant.py` starts a conversation session, polls setup updates, and prints a ready-to-open Daily call URL. It is intentionally minimal so you can quickly validate your scenario setup before building a full custom UI.
+Under the hood, Akapulu uses [Daily](https://docs.daily.co) for WebRTC, so the link you open connects you directly to the live call session.
 
 ## Prerequisite: Create a Scenario
 

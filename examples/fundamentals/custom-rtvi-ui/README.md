@@ -2,7 +2,7 @@
 
 This example shows how to build a custom frontend UI for Akapulu conversations using Next.js + [RTVI](https://docs.pipecat.ai/client/js/introduction).
 
-Instead of relying on a default call surface, you control the full experience: call controls, recording triggers, and how realtime events are presented in your app. This includes RTVI events such as transcripts, function/tool calls, and flow node transitions.
+Under the hood, Akapulu uses [Daily](https://docs.daily.co) for WebRTC. Instead of relying on Daily UI, with this example you use [PipecatClient](https://docs.pipecat.ai/client/js/api-reference/client-constructor) with [DailyTransport](https://docs.pipecat.ai/client/js/transports/daily) to drive your own custom UI around the live session and control the full experience: call controls, recording triggers, and how realtime events are presented in your app, including transcripts, function/tool calls, and flow node transitions.
 
 ## Quick Start
 

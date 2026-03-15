@@ -46,7 +46,11 @@ npm run dev
 
 6. Open `http://localhost:3000/demo` and click `Start Call`.
 
-![Custom UI demo](./media/customUIDemo_2x.gif)
+## Demo: Custom RTVI UI
+
+This GIF shows the custom RTVI UI flow at 2x speed.
+
+![Custom UI demo at 2x speed](./media/customUIDemo_2x.gif)
 
 ## Architecture overview
 ### File Structure

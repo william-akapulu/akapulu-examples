@@ -188,7 +188,7 @@ This Next.js project is an example of that architecture: it shows one way to ren
 If you want deeper Daily details, see the [Daily call client docs](https://docs.daily.co/reference/daily-js/daily-call-client) and [participants API docs](https://docs.daily.co/reference/daily-js/instance-methods/participants).
 
 
-## Code walkthrough `page.tsx` connect skeleton
+## Code walkthrough `page.tsx`
 
 
 

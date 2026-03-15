@@ -602,7 +602,6 @@ function CustomRtviDemo() {
 ##### Bot speaking state
 
 Bot speaking state comes through `RTVIEvent.ServerMessage`.
-The speech activity events are documented in [callbacks and events](https://docs.pipecat.ai/client/js/api-reference/callbacks).
 
 ```typescript
 /*
@@ -649,11 +648,13 @@ function CustomRtviDemo() {
   useEffect(() => {
 
     const handleServerMessage = (message: any) => {
-      // message.type can be:
-      // RAG | vision | http 
+
+      // RAG | vision | http (for tools)
       const messageType = message?.type;
+
       // message.function_name is the tool function name
       const functionName = message?.function_name;
+
       // message.body examples:
       // RAG -> { query: "..." }
       // vision -> {}
@@ -685,7 +686,7 @@ function CustomRtviDemo() {
 ### 6. Startup readiness and loading UX
 
 The bot can take around 10 to 15 seconds to fully initialize and become ready.
-Show a loading UI during this period.
+We recommend showing a loading UI for good user experience.
 
 Updates endpoint:
 

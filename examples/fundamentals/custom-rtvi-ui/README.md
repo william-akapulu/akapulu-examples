@@ -780,6 +780,9 @@ function CustomRtviDemo() {
 }
 ```
 
+After recording completes, you can view recordings in the Akapulu dashboard at <a href="https://akapulu.com/conversations" target="_blank" rel="noopener noreferrer">akapulu.com/recordings</a>.
+
+
 ### 8. Full outline snippet
 
 This combines the key patterns above into one end-to-end skeleton.

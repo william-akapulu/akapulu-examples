@@ -6,6 +6,26 @@ This example uses two core building blocks that work together. First, [Pipecat](
 
 Akapulu uses Daily behind the scenes to run the live call connection. In simple terms: Pipecat handles conversation state and realtime events, and Daily handles live audio and video. Instead of relying on Daily UI, this example shows how to build your own custom UI using that setup, so you can control call controls, recording, transcripts, tool-call displays, and stage transitions in one place.
 
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Demo: Custom RTVI UI](#demo-custom-rtvi-ui)
+- [Architecture overview](#architecture-overview)
+  - [File Structure](#file-structure)
+  - [Akapulu Call Lifecycle](#akapulu-call-lifecycle)
+  - [Pipecat plus Daily model](#pipecat-plus-daily-model)
+  - [Akapulu Call Lifecycle Diagram](#akapulu-call-lifecycle-diagram)
+  - [RTVI event model](#rtvi-event-model)
+- [Code walkthrough `page.tsx`](#code-walkthrough-pagetsx)
+  - [1. Create the client with Daily transport](#1-create-the-client-with-daily-transport)
+  - [2. Call connect endpoint, then join Daily call](#2-call-connect-endpoint-then-join-daily-call)
+  - [3. Provider layering for Daily call state plus RTVI integration](#3-provider-layering-for-daily-call-state-plus-rtvi-integration)
+  - [4. What `CustomRtviDemo` can access inside these providers](#4-what-customrtvidemo-can-access-inside-these-providers)
+  - [5. RTVIEvent reference](#5-rtvievent-reference)
+  - [6. Startup readiness and loading UX](#6-startup-readiness-and-loading-ux)
+  - [7. Recording](#7-recording)
+  - [8. Full outline snippet](#8-full-outline-snippet)
+
 ## Quick Start
 
 1. Log in to Akapulu and create a scenario.
@@ -693,7 +713,7 @@ We recommend showing a loading UI for good user experience.
 - `GET https://akapulu.com/api/conversations/<conversation_session_id>/updates/`
 - Output fields:
   - `call_is_ready`: boolean flag that the call is ready to enter connected UI
-  - `completion_percent`: numeric progress value for loading progress UI
+  - `completion_percent`: numeric progress value for loading progress UI from (0-100)
   - `latest_update_text`: current human-readable setup status message
 
 ```typescript
@@ -871,7 +891,6 @@ function CustomRtviDemo() {
       if (message?.type === "RAG") {}
       if (message?.type === "vision") {}
       if (message?.type === "http") {}
-      if (message?.type === "call_timeout") {}
     };
 
     client.on(RTVIEvent.ServerMessage, handleServerMessage);

@@ -13,6 +13,8 @@ examples/
   fundamentals/
     simple-assistant/
     custom-rtvi-ui/
+  example-scenarios/
+    healthcare-intake-scheduling/
 ```
 
 ## Fundamentals
@@ -26,3 +28,9 @@ examples/
   - A full custom frontend experience with RTVI events and tailored UI behavior.
   - This is the recommended approach for most real integrations.
   - Best when you want complete control over transcript, tool-call, and stage displays.
+
+## Example Scenarios
+
+- `healthcare-intake-scheduling`
+  - A healthcare screening flow that collects patient intake details and schedules an appointment.
+  - Includes pre/post actions, HTTP endpoints (intake + booking), a clinic RAG corpus for Q&A, a vision tool for camera-based symptom checks, and transition functions between phases.

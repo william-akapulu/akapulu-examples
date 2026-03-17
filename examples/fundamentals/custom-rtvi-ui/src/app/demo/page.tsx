@@ -523,6 +523,10 @@ function CustomRtviDemo() {
   }, [client]);
 
   const progressPercent = completionPercent;
+  // Partial user transcripts can arrive while the bot has joined but the call is
+  // still initializing, so hide user rows until the first bot utterance for cleaner UX.
+  const hasBotSpoken = transcripts.some((entry) => entry.speaker === "bot" && entry.text.trim() !== "");
+  const visibleTranscripts = hasBotSpoken ? transcripts : transcripts.filter((entry) => entry.speaker !== "user");
 
   // ---------------------------------------------------------------------------
   // UI states: idle -> connecting (progress) -> connected (live call)
@@ -828,7 +832,7 @@ function CustomRtviDemo() {
                     </div>
                   )}
                 </div>
-                {transcripts.map((entry) => (
+                {visibleTranscripts.map((entry) => (
                   <div key={entry.id} className={entry.speaker === "user" ? styles.userTranscript : styles.botTranscript}>
                     <span className={styles.speaker}>{entry.speaker === "user" ? "You" : "Bot"}:</span>
                     <span className={styles.text}>

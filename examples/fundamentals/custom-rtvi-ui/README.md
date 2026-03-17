@@ -588,6 +588,8 @@ These are the `message.type` values and payload shapes used in this project:
   - `message.type`: `"http"`
   - `message.function_name`: `"<function name>"`
   - `message.body`: `{ <...args> }`
+  
+  **Security note:** `message.body` is visible in frontend RTVI events. For this reason, secret variables are allowed only in endpoint headers (function tools and `pre_actions`/`post_actions`). Secret variables are not allowed in http request bodies, `role_messages`, or `task_messages`. Follow [Templates and Variables](https://akapulu.mintlify.app/guides/endpoints/templates-and-variables).
 
 
 

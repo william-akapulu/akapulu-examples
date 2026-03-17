@@ -36,11 +36,11 @@ Each endpoint includes:
 - `headers` - request headers (auth and metadata)
 - `body` - JSON payload sent to your backend
 
-In `headers` and `body`, you can use three variable categories:
+In endpoint templates, use variables as follows:
 
-- `{{runtime.*}}` - runtime variables you pass into the [connect endpoint](https://akapulu.mintlify.app/api-reference/conversations/connect) when starting the conversation
-- `{{secret.*}}` - secrets configured in [akapulu.com/secrets](https://akapulu.com/secrets)
-- `{{llm.*}}` - values the model extracts/fills at call time
+- `{{runtime.*}}` - runtime variables you pass into the [connect endpoint](https://akapulu.mintlify.app/api-reference/conversations/connect) when starting the conversation (headers or body)
+- `{{secret.*}}` - secrets configured in [akapulu.com/secrets](https://akapulu.com/secrets) (can be used in endpoint headers only)
+- `{{llm.*}}` - values the model extracts/fills at call time (headers or body for function tools)
 
 For `{{llm.*}}` variables, include a short description after a colon that clearly tells the model what value it should populate in that field.  
 Example: `{{llm.date:Appointment date in YYYY-MM-DD}}`

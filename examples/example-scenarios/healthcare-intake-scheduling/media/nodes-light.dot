@@ -1,0 +1,98 @@
+digraph HealthcareFlow {
+  rankdir=TB;
+  graph [fontname="Helvetica", ranksep="1.4", nodesep="1.2", pad="0.8", splines=polyline];
+  node [shape=box, style="rounded,filled", fillcolor="#eef2ff", color="#1e3a8a", fontname="Helvetica", fontsize=12, margin="0.2,0.15"];
+  edge [fontname="Helvetica", fontsize=12, fontcolor="#4b5563"];
+
+  intro [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="4">
+      <TR><TD><B><FONT POINT-SIZE="16">intro</FONT></B></TD></TR>
+      <TR><TD><FONT POINT-SIZE="3"> </FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="11" COLOR="#6b7280"><B>Task message</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Greet the patient warmly and introduce yourself</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">as a medical screening assistant.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Explain that you'll help with a brief screening questionnaire.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">After consent, use the transition tool to move to data intake.</FONT></TD></TR>
+    </TABLE>
+  >];
+  data_intake [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="4">
+      <TR><TD><B><FONT POINT-SIZE="16">data_intake</FONT></B></TD></TR>
+      <TR><TD><FONT POINT-SIZE="3"> </FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="11" COLOR="#6b7280"><B>Task message</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Collect full name, age, primary reason for visit, and symptoms.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Ask one question at a time and keep the tone conversational.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">If the patient shows something on camera, call the vision tool.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">When enough info is gathered, transition to appointment booking.</FONT></TD></TR>
+      <TR><TD><FONT POINT-SIZE="3"> </FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="11" COLOR="#6b7280"><B>pre_actions:</B></FONT> <FONT POINT-SIZE="11" COLOR="#0e7490"><I>Patient Intake Pre Action</I></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="11" COLOR="#6b7280"><B>post_actions:</B></FONT> <FONT POINT-SIZE="11" COLOR="#9333ea"><I>Patient Intake Post Action</I></FONT></TD></TR>
+    </TABLE>
+  >];
+  appointment_booking [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="4">
+      <TR><TD><B><FONT POINT-SIZE="16">appointment_booking</FONT></B></TD></TR>
+      <TR><TD><FONT POINT-SIZE="3"> </FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="11" COLOR="#6b7280"><B>Task message</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Help the patient schedule an appointment.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Ask for preferred date, time, and in-person vs virtual.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">After collecting details, use the HTTP booking tool.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Note: today is </FONT><FONT POINT-SIZE="12" COLOR="#7c3aed"><B>{{runtime.today}}</B></FONT><FONT POINT-SIZE="12">.</FONT></TD></TR>
+    </TABLE>
+  >];
+  qa [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="4">
+      <TR><TD><B><FONT POINT-SIZE="16">qa</FONT></B></TD></TR>
+      <TR><TD><FONT POINT-SIZE="3"> </FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="11" COLOR="#6b7280"><B>Task message</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Answer patient questions about screening, clinic details, or other topics.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Be helpful, empathetic, concise, and use RAG for clinic questions.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">When the patient is ready to conclude, use the transition tool.</FONT></TD></TR>
+    </TABLE>
+  >];
+  end [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="4">
+      <TR><TD><B><FONT POINT-SIZE="16">end</FONT></B></TD></TR>
+      <TR><TD><FONT POINT-SIZE="3"> </FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="11" COLOR="#6b7280"><B>Task message</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Thank the patient for completing the screening.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Provide brief next steps, then end the conversation.</FONT></TD></TR>
+      <TR><TD><FONT POINT-SIZE="3"> </FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="11" COLOR="#6b7280"><B>post_actions:</B></FONT> <FONT POINT-SIZE="11" COLOR="#b45309"><I>END_CONVERSATION</I></FONT></TD></TR>
+    </TABLE>
+  >];
+
+  t_intro_to_intake [label="transition_to_data_intake", shape=box, style="rounded,dashed,filled", fillcolor="#fff7ed", color="#c2410c", fontcolor="#9a3412"];
+  t_intake_to_booking [label="transition_to_appointment_booking", shape=box, style="rounded,dashed,filled", fillcolor="#fff7ed", color="#c2410c", fontcolor="#9a3412"];
+  t_qa_to_end [label="transition_to_end_screening", shape=box, style="rounded,dashed,filled", fillcolor="#fff7ed", color="#c2410c", fontcolor="#9a3412"];
+
+  intro -> t_intro_to_intake [label="  Use this function to transition to\n  the data_intake phase after consent.", fontcolor="#374151", fontsize=12];
+  t_intro_to_intake -> data_intake;
+  data_intake -> t_intake_to_booking [label="  Transition to the appointment\n  booking phase.", fontcolor="#4b5563", fontsize=12];
+  t_intake_to_booking -> appointment_booking;
+  appointment_booking -> booking_http [style=dashed, color="#6b7280", arrowhead=none, constraint=false, label="  Call this tool to book\n  the appointment.", fontcolor="#374151", fontsize=12];
+  booking_http -> qa;
+  qa -> t_qa_to_end [label="  Transition to the end of\n  the screening session.", fontcolor="#374151", fontsize=12];
+  t_qa_to_end -> end;
+
+  intake_vision [label="VIEW_CAMERA\n(vision)", style="rounded,dashed,filled", fillcolor="#ecfeff", color="#0e7490", fontcolor="#155e75"];
+  booking_http [label="book_appointment\n(http)", style="rounded,dashed,filled", fillcolor="#f0fdf4", color="#15803d", fontcolor="#166534"];
+  qa_rag [label="about_our_clinic\n(rag)", style="rounded,dashed,filled", fillcolor="#f5f3ff", color="#7c3aed", fontcolor="#5b21b6"];
+  intro_role_message [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="4">
+      <TR><TD ALIGN="LEFT"><B><FONT POINT-SIZE="16">Role message</FONT></B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="13">You are a friendly and professional medical screening assistant.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="13">Responses are converted to audio, so keep them concise and avoid special characters.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="13">Speak clearly and warmly to help patients feel comfortable.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="13">Do not start sentences with short bursts like sure! or absolutely!, since they can sound choppy.</FONT></TD></TR>
+    </TABLE>
+  >, style="rounded,dotted,filled", fillcolor="#fffbeb", color="#b45309", fontcolor="#92400e"];
+
+  data_intake -> intake_vision [style=dashed, color="#6b7280", arrowhead=none, constraint=false, label="  Use this tool when the user asks\n  you to look at the screen.", fontcolor="#374151", fontsize=12];
+  qa -> qa_rag [style=dashed, color="#6b7280", arrowhead=none, constraint=false, label="  a RAG tool with information\n  about our clinic", fontcolor="#374151", fontsize=12];
+
+  { rank=same; data_intake; intake_vision; }
+  { rank=same; appointment_booking; booking_http; }
+  { rank=same; qa; qa_rag; }
+  { rank=same; intro; intro_role_message; }
+}

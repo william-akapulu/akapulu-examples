@@ -22,7 +22,7 @@ The scenario is structured around the following node sequence:
   - Gives a brief closing summary and next steps.
   - Ends the conversation.
 
-![Healthcare intake scenario node flow](./media/nodes.svg)
+![Healthcare intake scenario node flow](./media/nodes-light.svg)
 
 ## Connect your scenario to external systems
 
@@ -537,7 +537,7 @@ Replace `"<SCENARIO_ID>"` with your actual scenario ID from the scenario details
 
 This is what a conversation using this scenario should look like:
 
-<video controls width="960" src="./media/Conversation-Demo.mp4"></video>
+<video controls width="960" src="https://akapulu-public-assets.s3.amazonaws.com/Conversation-Demo-Normal-Speed.mov"></video>
 
 For custom scenario or UI implementations, see our [enterprise](https://akapulu.com/pricing) plan.
 

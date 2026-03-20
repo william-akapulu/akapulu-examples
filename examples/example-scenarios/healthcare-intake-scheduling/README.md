@@ -270,6 +270,7 @@ Before creating the scenario, copy these IDs:
 - Endpoint ID for `Patient Intake Post Action`
 - Endpoint ID for `Patient Intake Book Appointment`
 - Knowledge base ID for `Healthcare Intake Demo Knowledge Base`
+- (optionally) Avatar ID (UUID) for the avatar you want to use
 
 ## Create scenario
 
@@ -278,9 +279,7 @@ Before creating the scenario, copy these IDs:
 2) Enter a name for your scenario.  
 Default name: `Healthcare Intake & Scheduling Demo`
 
-3) Click **Avatars** and select any avatar.
-
-4) Click **Nodes**, then click the **JSON** toggle.
+3) Click **Nodes**, then click the **JSON** toggle.
 
 ### Paste this node configuration
 
@@ -518,6 +517,8 @@ const getCurrentDateYmd = () => new Date().toISOString().slice(0, 10);
 const DEMO_PAGE_TITLE = "Healthcare Intake Assistant";
 // Scenario UUID from the dashboard ("Scenario details" section).
 const DEMO_SCENARIO_ID = "<SCENARIO_ID>";
+// Avatar UUID from your account or the public catalog.
+const DEMO_AVATAR_ID = "d20e3ec3-b713-4e5e-aa5b-02f09031a339";
 // Variables injected at connect-time; keep keys aligned with your scenario.
 const DEMO_RUNTIME_VARS: Record<string, string> = {
   patient_id: "patient_001",
@@ -531,7 +532,10 @@ const VOICE_ONLY_MODE = false;
 // -----------------------------------------------------------------------------
 ```
 
-Replace `"<SCENARIO_ID>"` with your actual scenario ID from the scenario details page.
+Replace `DEMO_SCENARIO_ID` and optionally `DEMO_AVATAR_ID` with your actual IDs (use avatar UUID, not handle).  
+Connect requires both `scenario_id` and `avatar_id`; `runtime_vars` are additional values passed at connect time.
+
+For public avatar options, browse [akapulu.com/catalog](https://akapulu.com/catalog).
 
 ## Example conversation demo
 

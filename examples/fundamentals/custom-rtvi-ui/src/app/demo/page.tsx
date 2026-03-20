@@ -12,7 +12,7 @@ import styles from "./Demo.module.css";
 High-level architecture of this page:
 
 1) Configure call inputs at the top:
-   - Scenario ID, runtime vars, and voice-only mode.
+   - Scenario ID, avatar ID, runtime vars, and voice-only mode.
 
 2) Start flow:
    - Frontend POSTs to `/api/demo`.
@@ -49,6 +49,8 @@ High-level architecture of this page:
 const DEMO_PAGE_TITLE = "Akapulu Custom UI Demo";
 // Scenario UUID from the dashboard ("Scenario details" section).
 const DEMO_SCENARIO_ID = "<SCENARIO_ID>";
+// Avatar UUID from your account or the public catalog.
+const DEMO_AVATAR_ID = "d20e3ec3-b713-4e5e-aa5b-02f09031a339";
 // Variables injected at connect-time; keep keys aligned with your scenario.
 const DEMO_RUNTIME_VARS: Record<string, string> = {};
 // Set true to hide video surfaces and run as a voice-first UI.
@@ -251,6 +253,7 @@ function CustomRtviDemo() {
       // returns Daily credentials + conversation_session_id back to the browser.
       body: JSON.stringify({
         scenario_id: DEMO_SCENARIO_ID,
+        avatar_id: DEMO_AVATAR_ID, // UUID, not handle
         runtime_vars: DEMO_RUNTIME_VARS,
         voice_only_mode: VOICE_ONLY_MODE,
       }),

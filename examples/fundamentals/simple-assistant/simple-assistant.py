@@ -22,15 +22,17 @@ API_BASE_URL = "https://akapulu-dev.fly.dev/api"
 CONNECT_PATH = "/conversations/connect/"
 POLL_INTERVAL_SECONDS = 0.5
 READY_DESCRIPTION = "bot ready"
+DEFAULT_AVATAR_ID = "d20e3ec3-b713-4e5e-aa5b-02f09031a339"
 
 
-def post_connect(api_key, scenario_id):
+def post_connect(api_key, scenario_id, avatar_id):
     # Build and send the initial "connect" request.
     # This allocates a conversation session and returns room/token info.
     url = f"{API_BASE_URL}{CONNECT_PATH}"
 
     body = {
         "scenario_id": scenario_id,
+        "avatar_id": avatar_id,
         "runtime_vars": {},
         "voice_only_mode": False,
         "custom_rtvi_connection": False,
@@ -77,9 +79,15 @@ def main():
     # -----------------------------
     parser = argparse.ArgumentParser()
     parser.add_argument("--scenario-id", required=True, help="Scenario ID to run")
+    parser.add_argument(
+        "--avatar-id",
+        default=DEFAULT_AVATAR_ID,
+        help=f"Avatar UUID to run (default: {DEFAULT_AVATAR_ID})",
+    )
 
     args = parser.parse_args()
     scenario_id = args.scenario_id.strip()
+    avatar_id = args.avatar_id.strip()
     api_key = (os.environ.get("AKAPULU_API_KEY") or "").strip()
 
     # -------------------------------------------------
@@ -89,6 +97,10 @@ def main():
         print("Error: scenario_id is required")
         sys.exit(1)
 
+    if avatar_id == "":
+        print("Error: avatar_id is required")
+        sys.exit(1)
+
     if api_key == "":
         print("Error: set AKAPULU_API_KEY in your environment")
         sys.exit(1)
@@ -96,7 +108,7 @@ def main():
     # -------------------------------------
     # Start a new conversation via backend.
     # -------------------------------------
-    status, connect_payload = post_connect(api_key, scenario_id)
+    status, connect_payload = post_connect(api_key, scenario_id, avatar_id)
     if status != 200:
         print("Connect failed:")
         print(json.dumps(connect_payload, indent=2))

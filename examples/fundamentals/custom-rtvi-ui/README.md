@@ -44,20 +44,22 @@ Then edit `.env.local`:
 AKAPULU_API_KEY=your_api_key_here
 ```
 
-4. Update `src/app/demo/page.tsx` with your scenario ID.
+4. Update `src/app/demo/page.tsx` with your scenario ID and avatar ID.
 
 ```typescript
 // src/app/demo/page.tsx lines 51 to 58
 const DEMO_PAGE_TITLE = "Akapulu Custom UI Demo";
 // Scenario UUID from the dashboard ("Scenario details" section).
 const DEMO_SCENARIO_ID = "<SCENARIO_ID>";
+// Avatar UUID from your account or the public catalog.
+const DEMO_AVATAR_ID = "d20e3ec3-b713-4e5e-aa5b-02f09031a339";
 // Variables injected at connect-time; keep keys aligned with your scenario.
 const DEMO_RUNTIME_VARS: Record<string, string> = {};
 // Set true to hide video surfaces and run as a voice-first UI.
 const VOICE_ONLY_MODE = false;
 ```
 
-Replace `DEMO_SCENARIO_ID` with your scenario UUID.
+Replace `DEMO_SCENARIO_ID` and optionally `DEMO_AVATAR_ID` with your UUIDs.
 
 5. Install dependencies and start the dev server.
 
@@ -100,6 +102,7 @@ Akapulu conversations start by calling the **[Connect API](https://akapulu.mintl
 - **Auth**: `Authorization: Bearer <AKAPULU_API_KEY>`
 - **Input body**:
   - `scenario_id`: which Akapulu scenario to run.
+  - `avatar_id`: avatar UUID to use for the conversation.
   - `runtime_vars`: runtime values injected into the scenario.
   - `voice_only_mode`: `true` for audio-only, `false` for video-capable mode.
   - `custom_rtvi_connection`: set to `true` for this example
@@ -270,6 +273,7 @@ function CustomRtviDemo() {
     body: JSON.stringify({
       // These values are passed through to Akapulu connect.
       scenario_id: DEMO_SCENARIO_ID,
+      avatar_id: DEMO_AVATAR_ID,
       runtime_vars: DEMO_RUNTIME_VARS,
       voice_only_mode: VOICE_ONLY_MODE,
     }),
@@ -296,6 +300,7 @@ const response = await fetch(`${AKAPULU_API_BASE_URL}/conversations/connect/`, {
   },
   body: JSON.stringify({
     scenario_id: scenarioId,
+    avatar_id: body?.avatar_id,
     runtime_vars: body?.runtime_vars,
     voice_only_mode: body?.voice_only_mode === true,
     custom_rtvi_connection: true,
@@ -802,6 +807,7 @@ import { DailyTransport } from "@pipecat-ai/daily-transport";
 import { DailyProvider, DailyVideo, useDaily, useParticipantIds } from "@daily-co/daily-react";
 
 const DEMO_SCENARIO_ID = "<SCENARIO_ID>";
+const DEMO_AVATAR_ID = "d20e3ec3-b713-4e5e-aa5b-02f09031a339";
 const DEMO_RUNTIME_VARS = {};
 const VOICE_ONLY_MODE = false;
 
@@ -833,6 +839,7 @@ function CustomRtviDemo() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         scenario_id: DEMO_SCENARIO_ID,
+        avatar_id: DEMO_AVATAR_ID,
         runtime_vars: DEMO_RUNTIME_VARS,
         voice_only_mode: VOICE_ONLY_MODE,
       }),

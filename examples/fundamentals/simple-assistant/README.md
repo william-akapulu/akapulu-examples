@@ -13,26 +13,21 @@ Before running this example, create a scenario in the Akapulu web app:
    - This opens the scenario builder where you define the assistant behavior and flow.
 2. Enter any scenario name, such as `Simple Assistant`.
    - The scenario name is your internal label for identifying this configuration later.
-3. Set STT keywords to `Akapulu`.
-   - STT(Speech to text) keywords help speech recognition catch important terms that may be harder to detect otherwise (for example, company names like `Akapulu`).
-4. Open the `Avatars` tab and select any avatar.
-   - You can also browse available catalog avatars at [akapulu.com/catalog](https://akapulu.com/catalog).
-   - The selected avatar is the visual persona used when this scenario runs in video mode.
-5. Open the `Nodes` tab and click `+ Add Node` in the lower-right corner.
+3. Open the `Nodes` tab and click `+ Add Node` in the lower-right corner.
    - Nodes are the building blocks of your conversation flow.
    - For this simple assistant example, create just one node so setup stays easy and fast.
-6. In the new node:
+4. In the new node:
    - Enter any node name, such as `Greeting`.
-7. Define the role and task messages:
+5. Define the role and task messages:
    - Role message (node-level persona): the assistant's persistent behavior and tone for the node.
    - Task message (node-level objective): what the assistant should accomplish in that node.
-8. Use this example role message:
+6. Use this example role message:
 
 ```text
 You are an Akapulu solutions consultant.
 ```
 
-9. Use this example task message:
+7. Use this example task message:
 
 ```text
 Akapulu overview:
@@ -75,9 +70,12 @@ You can also paste the full node config directly: in the `Nodes` tab, click the 
 }
 ```
 
-10. Click `Save` and copy the scenario ID.
+8. Click `Save` and copy the scenario ID.
    - Copy the value shown right below `Scenario details`.
    - The scenario ID is the UUID used by API clients (like this simple assistant script) to start conversations with this scenario.
+9. Choose an avatar ID.
+   - The script uses a default avatar ID (`d20e3ec3-b713-4e5e-aa5b-02f09031a339`).
+   - To use a different avatar, copy an avatar UUID from your account or browse [akapulu.com/catalog](https://akapulu.com/catalog).
 
 GIF showing how to create the scenario[^advanced-workflows]:
 
@@ -89,7 +87,7 @@ GIF showing how to create the scenario[^advanced-workflows]:
 
 `simple-assistant.py` is a minimal CLI example that:
 
-1. Calls the Akapulu [`connect` API](https://akapulu.mintlify.app/api-reference/conversations/connect) with your scenario ID.
+1. Calls the Akapulu [`connect` API](https://akapulu.mintlify.app/api-reference/conversations/connect) with your scenario ID and avatar ID.
 2. Polls conversation setup updates until the bot is ready.
 3. Prints a tokenized Daily call URL you can open directly.
 
@@ -110,10 +108,16 @@ It is designed to be a quick sanity check for scenario setup and end-to-end conn
 export AKAPULU_API_KEY="your_api_key_here"
 ```
 
-5. Run the script with your scenario ID:
+5. Run the script with your scenario ID (uses the default avatar ID):
 
 ```bash
 python3 simple-assistant.py --scenario-id "your-scenario-id"
+```
+
+6. Optional: run with a different avatar ID:
+
+```bash
+python3 simple-assistant.py --scenario-id "your-scenario-id" --avatar-id "your-new-avatar-id"
 ```
 
 When setup completes, the script prints `Daily call URL`. Open that URL to join the call.

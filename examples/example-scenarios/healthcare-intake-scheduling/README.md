@@ -38,7 +38,7 @@ Each endpoint includes:
 
 In endpoint templates, use variables as follows:
 
-- `{{runtime.*}}` - runtime variables you pass into the [connect endpoint](https://akapulu.mintlify.app/api-reference/conversations/connect) when starting the conversation (headers or body)
+- `{{runtime.*}}` - runtime variables you pass into the [connect endpoint](https://docs.akapulu.com/api-reference/conversations/connect) when starting the conversation (headers or body)
 - `{{secret.*}}` - secrets configured in [akapulu.com/secrets](https://akapulu.com/secrets) (can be used in endpoint headers only)
 - `{{llm.*}}` - values the model extracts/fills at call time (headers or body for function tools)
 
@@ -221,7 +221,7 @@ Go to [akapulu.com/endpoints](https://akapulu.com/endpoints), click **Create End
 }
 ```
 
-Since these endpoints use the runtime variable `patient_id`, you must pass a value for `patient_id` when calling the [connect endpoint](https://akapulu.mintlify.app/api-reference/conversations/connect).
+Since these endpoints use the runtime variable `patient_id`, you must pass a value for `patient_id` when calling the [connect endpoint](https://docs.akapulu.com/api-reference/conversations/connect).
 
 ## How RAG knowledge bases work in Akapulu
 

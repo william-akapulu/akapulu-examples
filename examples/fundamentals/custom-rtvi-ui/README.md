@@ -96,7 +96,7 @@ Everything else is standard project scaffolding for this Next.js app.
 
 ### Akapulu Call Lifecycle
 
-Akapulu conversations start by calling the **[Connect API](https://akapulu.mintlify.app/api-reference/conversations/connect)**:
+Akapulu conversations start by calling the **[Connect API](https://docs.akapulu.com/api-reference/conversations/connect)**:
 
 - **Endpoint**: `POST https://akapulu.com/api/conversations/connect/`
 - **Auth**: `Authorization: Bearer <AKAPULU_API_KEY>`
@@ -594,7 +594,7 @@ These are the `message.type` values and payload shapes used in this project:
   - `message.function_name`: `"<function name>"`
   - `message.body`: `{ <...args> }`
   
-  **Security note:** `message.body` is visible in frontend RTVI events. For this reason, secret variables are allowed only in endpoint headers (function tools and `pre_actions`/`post_actions`). Secret variables are not allowed in http request bodies, `role_messages`, or `task_messages`. Follow [Templates and Variables](https://akapulu.mintlify.app/guides/endpoints/templates-and-variables).
+  **Security note:** `message.body` is visible in frontend RTVI events. For this reason, secret variables are allowed only in endpoint headers (function tools and `pre_actions`/`post_actions`). Secret variables are not allowed in http request bodies, `role_messages`, or `task_messages`. Follow [Templates and Variables](https://docs.akapulu.com/guides/endpoints/templates-and-variables).
 
 
 
@@ -715,7 +715,7 @@ function CustomRtviDemo() {
 The bot can take around 10 to 15 seconds to fully initialize and become ready.
 We recommend showing a loading UI for good user experience.
 
-**[Updates endpoint](https://akapulu.mintlify.app/api-reference/conversations/updates)**:
+**[Updates endpoint](https://docs.akapulu.com/api-reference/conversations/updates)**:
 
 - `GET https://akapulu.com/api/conversations/<conversation_session_id>/updates/`
 - Output fields:

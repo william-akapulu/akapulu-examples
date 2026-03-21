@@ -18,7 +18,7 @@ This script does three things:
 """
 
 
-API_BASE_URL = "https://akapulu-dev.fly.dev/api"
+API_BASE_URL = "https://akapulu.com/api"
 CONNECT_PATH = "/conversations/connect/"
 POLL_INTERVAL_SECONDS = 0.5
 READY_DESCRIPTION = "bot ready"

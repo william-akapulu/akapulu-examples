@@ -2,7 +2,7 @@
   <img src="./logo.png" alt="Akapulu logo" width="220" />
 </p>
 
-## Examples
+## Akapulu Examples
 
 Akapulu helps you build conversational avatar experiences with real-time voice and video.
 

@@ -19,7 +19,7 @@ Before running this example, create a scenario in the Akapulu web app:
 4. In the new node:
    - Enter any node name, such as `Greeting`.
 5. Define the role and task messages:
-   - Role message (node-level persona): the assistant's persistent behavior and tone for the node.
+   - Role message (node-level persona): the assistant's persistent behavior and tone.
    - Task message (node-level objective): what the assistant should accomplish in that node.
 6. Use this example role message:
 

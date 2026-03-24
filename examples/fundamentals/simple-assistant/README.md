@@ -67,9 +67,6 @@ You can also paste the full node config directly: in the `Nodes` tab, click the 
 8. Click `Save` and copy the scenario ID.
    - Copy the value shown right below `Scenario details`.
    - The scenario ID is the UUID used by API clients (like this simple assistant script) to start conversations with this scenario.
-9. Choose an avatar ID.
-   - The script uses a default avatar ID (`d20e3ec3-b713-4e5e-aa5b-02f09031a339`).
-   - To use a different avatar, copy an avatar UUID from your account or browse [akapulu.com/catalog](https://akapulu.com/catalog).
 
 GIF showing how to create the scenario[^advanced-workflows]:
 

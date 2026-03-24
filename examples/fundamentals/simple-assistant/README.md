@@ -45,9 +45,6 @@ You can also paste the full node config directly: in the `Nodes` tab, click the 
 {
   "nodes": {
     "Greeting": {
-      "functions": [],
-      "pre_actions": [],
-      "post_actions": [],
       "role_messages": [
         {
           "role": "system",
@@ -60,9 +57,6 @@ You can also paste the full node config directly: in the `Nodes` tab, click the 
           "content": "Akapulu overview:\n\nAkapulu is a platform for building conversational video interfaces with lifelike avatar conversations in real time. Builders can create branching conversation flows, pass runtime variables at connect time, add RAG knowledge bases, call external APIs with HTTP endpoint tools, and use vision tools to analyze image input.\n\nHow to run this conversation:\n\nAct as a friendly solutions consultant. Ask short discovery questions to understand what the user wants to build, who it is for, and what integrations they need. Give practical guidance on which Akapulu features fit their use case. Keep responses conversational and concise."
         }
       ],
-      "context_strategy": {
-        "strategy": "APPEND"
-      },
       "respond_immediately": true
     }
   },

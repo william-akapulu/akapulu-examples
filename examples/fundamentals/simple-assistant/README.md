@@ -101,6 +101,13 @@ export AKAPULU_API_KEY="your_api_key_here"
 
 5. Run the script with your scenario ID (uses the default avatar ID):
 
+If you have not cloned the examples repo yet:
+
+```bash
+git clone https://github.com/Akapulu/akapulu-examples.git
+cd akapulu-examples/examples/fundamentals/simple-assistant
+```
+
 ```bash
 python3 simple-assistant.py --scenario-id "your-scenario-id"
 ```

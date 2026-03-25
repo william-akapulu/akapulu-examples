@@ -8,7 +8,7 @@ Why this exists:
 - Gives the demo a stable local endpoint (`/api/demo`) for both connect + updates.
 - Lets the frontend call one path while this route handles auth + upstream URLs.
 */
-const AKAPULU_API_BASE_URL = "https://akapulu/api";
+const AKAPULU_API_BASE_URL = "https://akapulu.com/api";
 
 export async function POST(request: NextRequest) {
   // Server-side secret used to authenticate against the upstream API.
@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => ({}));
   // Connect requires a scenario id to choose which flow to run.
   const scenarioId = typeof body?.scenario_id === "string" ? body.scenario_id.trim() : "";
+  const avatarId = typeof body?.avatar_id === "string" ? body.avatar_id.trim() : "";
 
   if (apiKey === "") {
     return Response.json(
@@ -27,6 +28,12 @@ export async function POST(request: NextRequest) {
   if (scenarioId === "") {
     return Response.json(
       { error: "scenario_id is required." },
+      { status: 400 },
+    );
+  }
+  if (avatarId === "") {
+    return Response.json(
+      { error: "avatar_id is required." },
       { status: 400 },
     );
   }
@@ -41,6 +48,7 @@ export async function POST(request: NextRequest) {
     },
     body: JSON.stringify({
       scenario_id: scenarioId,
+      avatar_id: avatarId,
       // Forward optional runtime vars from UI to scenario runtime context.
       runtime_vars: body?.runtime_vars,
       // Normalized to strict boolean before forwarding.

@@ -369,9 +369,15 @@ function CustomRtviDemo() {
 
   // Optional recording strategy: start once setup crosses 50%.
   useEffect(() => {
-    if (!daily) return;
+    if (!daily) {
+      console.info("[recording] Daily call object unavailable; skipping start check");
+      return;
+    }
     if (completionPercent < 50) return;
-    if (recordingStartRequestedRef.current) return;
+    if (recordingStartRequestedRef.current) {
+      console.info("[recording] Start already requested; skipping duplicate attempt");
+      return;
+    }
 
     const startRecording = (daily as any).startRecording;
     if (typeof startRecording !== "function") {
@@ -380,16 +386,21 @@ function CustomRtviDemo() {
       return;
     }
 
+    console.info("[recording] Attempting cloud recording start", {
+      completionPercent,
+      conversationSessionId,
+      status,
+    });
     recordingStartRequestedRef.current = true;
     Promise.resolve(startRecording.call(daily, { type: "cloud" }))
       .then(() => {
-        // recording started
+        console.info("[recording] Cloud recording start request succeeded");
       })
       .catch((error: unknown) => {
         console.error("[recording] start request failed", error);
         recordingStartRequestedRef.current = false;
       });
-  }, [daily, completionPercent]);
+  }, [daily, completionPercent, conversationSessionId, status]);
 
   // Auto-end when the remote participant leaves.
   useEffect(() => {

@@ -1,10 +1,10 @@
 # Custom UI (Next.js)
 
-This example shows how to build a custom frontend UI for Akapulu conversations using Next.js + [RTVI](https://docs.pipecat.ai/client/js/introduction).
+This example shows how to build a custom frontend UI for Akapulu conversations using Next.js + the [Pipecat JavaScript client SDK](https://docs.pipecat.ai/client/js/introduction).
 
 This example uses two core building blocks that work together. First, [Pipecat](https://docs.pipecat.ai/getting-started/introduction) is the open-source realtime conversation layer (maintained by Daily and the community), and your frontend talks to it through [PipecatClient](https://docs.pipecat.ai/client/js/api-reference/client-constructor) and [RTVI events](https://docs.pipecat.ai/client/js/api-reference/callbacks). Second, [Daily](https://docs.daily.co) is the WebRTC media layer that carries live audio and video.
 
-Akapulu uses Daily behind the scenes to run the live call connection. In simple terms: Pipecat handles conversation state and realtime events, and Daily handles live audio and video. Instead of relying on Daily UI, this example shows how to build your own custom UI using that setup, so you can control call controls, recording, transcripts, tool-call displays, and stage transitions in one place.
+Akapulu uses Daily & Pipecat behind the scenes to orchestrate live calls. In simple terms: Pipecat handles conversation state and realtime events, and Daily handles live audio and video. Instead of relying on Daily UI, this example shows how to build your own custom UI using that setup, so you can control call controls, recording, transcripts, tool-call displays, and stage transitions in one place.
 
 ## Table of Contents
 
@@ -28,11 +28,17 @@ Akapulu uses Daily behind the scenes to run the live call connection. In simple 
 
 ## Quick Start
 
-1. Log in to Akapulu and create a scenario.
+1. Clone the examples repo and open this example folder.
+
+```bash
+git clone https://github.com/Akapulu/akapulu-examples.git && cd akapulu-examples/examples/fundamentals/custom-rtvi-ui
+```
+
+2. Log in to Akapulu and create a scenario.
    - See [Simple Assistant guide](../simple-assistant/README.md#prerequisite-create-a-scenario).
-2. Create an API key and add it to your environment.
+3. Create an API key and add it to your environment.
    - See [Simple Assistant run section](../simple-assistant/README.md#run-the-simple-assistant).
-3. Create `.env.local` from `.env.example` and set your API key.
+4. Create `.env.local` from `.env.example` and set your API key.
 
 ```bash
 cp .env.example .env.local
@@ -44,7 +50,7 @@ Then edit `.env.local`:
 AKAPULU_API_KEY=your_api_key_here
 ```
 
-4. Update `src/app/demo/page.tsx` with your scenario ID and avatar ID.
+5. Update `src/app/demo/page.tsx` with your scenario ID and avatar ID.
 
 ```typescript
 // src/app/demo/page.tsx lines 51 to 58
@@ -61,13 +67,13 @@ const VOICE_ONLY_MODE = false;
 
 Replace `DEMO_SCENARIO_ID` and optionally `DEMO_AVATAR_ID` with your UUIDs.
 
-5. Install dependencies and start the dev server.
+6. Install dependencies and start the dev server.
 
 ```bash
 npm install && npm run dev
 ```
 
-6. Open `http://localhost:3000/demo` and click `Start Call`.
+7. Open `http://localhost:3000/demo` and click `Start Call`.
 
 ## Demo: Custom RTVI UI
 

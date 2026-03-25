@@ -11,7 +11,7 @@ The scenario is structured around the following node sequence:
 - `data_intake`
   - Collects core patient details (name, age, reason for visit, symptoms/concerns).
   - Uses a `vision` tool when the patient asks the assistant to look at something on camera.
-  - Runs `pre_actions` on node entry and `post_actions` on node exit, both using `http` tools for intake lifecycle tracking.
+  - Runs `pre_actions` on node entry and `post_actions` after the bot completes its first utterance in the node, both using `http` tools for intake lifecycle tracking.
 - `appointment_booking`
   - Collects preferred date/time and visit type (in-person vs virtual).
   - Uses an `http` tool to submit the appointment booking request.
@@ -65,6 +65,12 @@ This demo Flask server provides three routes that match the scenario flow:
 - `POST /book-appointment` - receives booking details, prints request inputs, and returns a mock `appointment_confirmation_id`.
 
 Run the Flask server:
+
+0) Clone the examples repo and move into this scenario folder.
+
+```bash
+git clone https://github.com/Akapulu/akapulu-examples.git && cd akapulu-examples/examples/example-scenarios/healthcare-intake-scheduling
+```
 
 1) Create and activate a virtual environment, then install Flask.
 
@@ -227,13 +233,13 @@ Since these endpoints use the runtime variable `patient_id`, you must pass a val
 
 A RAG knowledge base is a knowledge source your assistant can query during a live conversation.
 
-At a high level, the flow is:
+At a high level, the flow for attaching a RAG tool is:
 
 1) You create a knowledge base in Akapulu.
 2) You add one or more documents to that knowledge base.
 3) Akapulu indexes those documents into retrievable chunks.
-4) In your scenario, you add a `rag` tool and set its knowledge base ID.
-5) During the call, the model uses that tool to retrieve relevant context before answering.
+4) In your scenario builder, open the node where you want knowledge-backed answers, add a **RAG tool**, and select your knowledge base for that tool (or via JSON, add a function with `type: "rag"` and set `corpus_id` to your knowledge base ID).
+5) During the conversation, when the flow enters that node, the assistant can call the RAG tool to query that knowledge base before it responds.
 
 This lets the assistant answer domain-specific questions using your own content, instead of relying only on general model knowledge.
 
@@ -279,7 +285,7 @@ Before creating the scenario, copy these IDs:
 2) Enter a name for your scenario.  
 Default name: `Healthcare Intake & Scheduling Demo`
 
-3) Click **Nodes**, then click the **JSON** toggle.
+3) Click the **JSON** option in the nodes/json toggle.
 
 ### Paste this node configuration
 
@@ -294,7 +300,7 @@ Each node config follows the same general shape:
 - `pre_actions` array
   - Actions that run automatically when the node starts (before the bot responds).
 - `post_actions` array
-  - Actions that run automatically after the bot speaks in a node (for `end_conversation`).
+  - Actions that run automatically after the bot completes its first utterance in a node (for example `end_conversation`).
 - `task_messages` array
   - Node-specific instructions for what the assistant should do in this stage.
 - optional `role_messages` array
@@ -302,9 +308,9 @@ Each node config follows the same general shape:
 - `respond_immediately` boolean
   - Whether the assistant should begin responding as soon as this node is active.
 
-Some nodes may leave certain arrays empty if they do not need them.
+Per node, `functions`, `pre_actions`, `post_actions`, and `role_messages` can be omitted or left empty when not needed. `task_messages` is required and must include at least one non-empty entry.
 
-Note on LLM context flow: at the start of the conversation, the role message is added first, then the current node's task message. After that, user and assistant turns are appended as the dialog continues. When the flow transitions to a new node, that node's task message is appended, and dialog continues appending from there.
+Note on LLM context flow: when the conversation flow enters a node, that node's role messages (if any) and task messages are appended to context, then user and assistant turns continue appending as the dialog progresses. On each node transition, the new node's role/task messages are appended before conversation turns continue.
 
 Example structure with placeholder values:
 

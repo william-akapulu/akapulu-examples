@@ -104,8 +104,7 @@ export AKAPULU_API_KEY="your_api_key_here"
 If you have not cloned the examples repo yet:
 
 ```bash
-git clone https://github.com/Akapulu/akapulu-examples.git
-cd akapulu-examples/examples/fundamentals/simple-assistant
+git clone https://github.com/Akapulu/akapulu-examples.git && cd akapulu-examples/examples/fundamentals/simple-assistant
 ```
 
 ```bash
@@ -140,4 +139,4 @@ With a direct Daily URL, you cannot reliably:
 
 For real integrations, use the custom UI example instead:
 
-- `examples/examples/fundamentals/custom-rtvi-ui`
+- [`examples/examples/fundamentals/custom-rtvi-ui`](../custom-rtvi-ui)

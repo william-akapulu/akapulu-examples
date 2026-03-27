@@ -3,7 +3,7 @@
 This example is the fastest way to run an Akapulu scenario from the command line.
 
 `simple-assistant.py` starts a conversation session, polls setup updates, and prints a ready-to-open Daily call URL. It is intentionally minimal so you can quickly validate your scenario setup before building a full custom UI.
-Under the hood, Akapulu uses [Daily](https://docs.daily.co) for WebRTC, so the link you open connects you directly to the live call session.
+Under the hood, Akapulu uses [Daily](https://docs.daily.co) for WebRTC, so the link you open connects you directly to the daily call.
 
 ## Prerequisite: Create a Scenario
 
@@ -21,13 +21,13 @@ Before running this example, create a scenario in the Akapulu web app:
 5. Define the role and task messages:
    - Role message (node-level persona): the assistant's persistent behavior and tone.
    - Task message (node-level objective): what the assistant should accomplish in that node.
-6. Use this example role message:
+   - Role message example:
 
 ```text
 You are an Akapulu solutions consultant.
 ```
 
-7. Use this example task message:
+   - Task message example:
 
 ```text
 Akapulu overview:
@@ -64,15 +64,13 @@ You can also paste the full node config directly: in the `Nodes` tab, click the 
 }
 ```
 
-8. Click `Save` and copy the scenario ID.
+6. Click `Save` and copy the scenario ID.
    - Copy the value shown right below `Scenario details`.
    - The scenario ID is the UUID used by API clients (like this simple assistant script) to start conversations with this scenario.
 
-GIF showing how to create the scenario[^advanced-workflows]:
+GIF showing how to create the scenario:
 
 ![GIF showing how to create a scenario](./media/Scenario-Creation-2x.gif)
-
-[^advanced-workflows]: This quickstart uses one node so you can get running in minutes. In production scenarios, you will usually create multiple nodes for different stages of the conversation (for example: greeting, qualification, knowledge retrieval, objection handling, and wrap-up), then connect them with transitions so the assistant can branch based on user intent. You can also attach tools to specific nodes, such as HTTP endpoint tools for CRM/workflow/API actions, RAG knowledge bases for grounded answers from your docs, and vision tools when you need image understanding. A common pattern is to keep each node focused on one job with a clear task message, and only enable the tools and data sources needed for that stage.
 
 ## What `simple-assistant.py` Does
 
@@ -86,32 +84,32 @@ It is designed to be a quick sanity check for scenario setup and end-to-end conn
 
 ## Run the Simple Assistant
 
-1. Open your scenario in the Akapulu web app at [akapulu.com/scenarios](https://akapulu.com/scenarios).
-2. Copy the scenario ID (the UUID shown in the scenario detail page).
-3. Create an API key:
+1. Create an API key:
    - Go to [akapulu.com/api-keys](https://akapulu.com/api-keys).
    - Click `Create API key`.
-   - Enter a description.
+   - Enter a description and click `Create API Key`
    - Copy the actual API key value.
-4. Export your API key:
+2. Export your API key:
 
 ```bash
 export AKAPULU_API_KEY="your_api_key_here"
 ```
 
-5. Run the script with your scenario ID (uses the default avatar ID):
-
-If you have not cloned the examples repo yet:
+3. If you have not cloned the examples repo yet, clone it:
 
 ```bash
 git clone https://github.com/Akapulu/akapulu-examples.git && cd akapulu-examples/examples/fundamentals/simple-assistant
 ```
 
+4. Run the script with your scenario ID (uses the default avatar ID):
+
+   - Replace `"your-scenario-id"` with your actual scenario ID.
+
 ```bash
 python3 simple-assistant.py --scenario-id "your-scenario-id"
 ```
 
-6. Optional: run with a different avatar ID:
+5. Optional: run with a different avatar ID:
 
 ```bash
 python3 simple-assistant.py --scenario-id "your-scenario-id" --avatar-id "your-new-avatar-id"
@@ -127,7 +125,7 @@ This GIF is a demo of the process of running the simple assistant, shown at 2x s
 
 ## Important: Direct Daily URL Limitations
 
-Using the direct Daily URL is useful for quick testing, but it is not recommended for production or full-featured demos.
+Using the direct Daily URL is useful for quick testing, but it is not recommended for actual user facing applications.
 
 With a direct Daily URL, you cannot reliably:
 

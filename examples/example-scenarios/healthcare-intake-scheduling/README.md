@@ -4,6 +4,8 @@
 
 This example scenario shows how to run a full patient screening conversation that collects intake details, schedules an appointment, answers clinic questions, and then closes the session cleanly.
 
+See the example page in our docs: [Healthcare Intake & Scheduling](https://docs.akapulu.com/examples/scenarios/healthcare-intake-scheduling).
+
 The scenario is structured around the following node sequence:
 
 - `intro`
@@ -84,8 +86,6 @@ python3 -m venv flask-venv && source flask-venv/bin/activate && pip install flas
 cd "Flask Server" && python flask-server.py
 ```
 
-![Flask server running locally](./media/flask_server.png)
-
 ## Expose your local server with ngrok
 
 Your endpoints must be publicly reachable so Akapulu can call them during a live conversation. In production, you can host them on any platform you prefer.
@@ -127,8 +127,6 @@ ngrok http 8080 --url https://<YOUR_NGROK_DOMAIN>
 ```
 
 This starts an ngrok public endpoint and securely forwards incoming requests to your local Flask server on port `8080`.
-
-![ngrok tunnel forwarding to local Flask server](./media/ngrok-terminal.png)
 
 
 ## Creating endpoints
@@ -289,76 +287,9 @@ Default name: `Healthcare Intake & Scheduling Demo`
 
 ### Paste this node configuration
 
-This JSON has two top-level keys: `nodes` and `initial_node`.
+For JSON structure, field rules, and schema details, see the [Using JSON guide](https://docs.akapulu.com/guides/scenarios/using-json).
 
-The `nodes` object is a dictionary where each key is a node name (for example `intro`, `data_intake`, `appointment_booking`, `qa`, and `end`), and each value is that node's configuration.
-
-Each node config follows the same general shape:
-
-- `functions` array
-  - Tools this node can call (for example `transition`, `http`, `rag`, or `vision`).
-- `pre_actions` array
-  - Actions that run automatically when the node starts (before the bot responds).
-- `post_actions` array
-  - Actions that run automatically after the bot completes its first utterance in a node (for example `end_conversation`).
-- `task_messages` array
-  - Node-specific instructions for what the assistant should do in this stage.
-- optional `role_messages` array
-  - Higher-level role, tone, and response-style guidance.
-- `respond_immediately` boolean
-  - Whether the assistant should begin responding as soon as this node is active.
-
-Per node, `functions`, `pre_actions`, `post_actions`, and `role_messages` can be omitted or left empty when not needed. `task_messages` is required and must include at least one non-empty entry.
-
-Note on LLM context flow: when the conversation flow enters a node, that node's role messages (if any) and task messages are appended to context, then user and assistant turns continue appending as the dialog progresses. On each node transition, the new node's role/task messages are appended before conversation turns continue.
-
-Example structure with placeholder values:
-
-```json
-{
-  "nodes": {
-    "<NODE_NAME>": {
-      "functions": [
-        {
-          "function": {
-            "name": "<FUNCTION_NAME>",
-            "type": "<transition|http|rag|vision>",
-            "description": "<FUNCTION_DESCRIPTION>"
-          }
-        }
-      ],
-      "pre_actions": [
-        {
-          "type": "http",
-          "endpoint_id": "<YOUR_PRE_ACTION_ENDPOINT_ID>"
-        }
-      ],
-      "post_actions": [
-        {
-          "type": "<http|end_conversation>",
-          "endpoint_id": "<YOUR_POST_ACTION_ENDPOINT_ID>"
-        },
-      ],
-      "task_messages": [
-        {
-          "role": "system",
-          "content": "<TASK_INSTRUCTIONS>"
-        }
-      ],
-      "role_messages": [
-        {
-          "role": "system",
-          "content": "<ROLE_INSTRUCTIONS>"
-        }
-      ],
-      "respond_immediately": true
-    }
-  },
-  "initial_node": "<START_NODE_NAME>"
-}
-```
-
-In **Nodes**, paste the following JSON:
+Paste in the following JSON:
 
 Replace every placeholder ID in this JSON with your actual IDs from the endpoints and knowledge base you created.
 
@@ -512,6 +443,13 @@ Open:
 
 In that file, update the full customization block:
 
+### Runtime vars used by this scenario
+
+This scenario expects runtime variables at connect time. The UI sends them through `DEMO_RUNTIME_VARS`.
+
+- `patient_id`: used by endpoint templates like `{{runtime.patient_id}}` for intake and booking requests.
+- `today`: used by scenario instructions like `{{runtime.today}}` so date-sensitive prompts stay current.
+
 ```tsx
 // -----------------------------------------------------------------------------
 // CUSTOMIZATION START
@@ -542,12 +480,6 @@ Replace `DEMO_SCENARIO_ID` and optionally `DEMO_AVATAR_ID` with your actual IDs 
 Connect requires both `scenario_id` and `avatar_id`; `runtime_vars` are additional values passed at connect time.
 
 For public avatar options, browse [akapulu.com/catalog](https://akapulu.com/catalog).
-
-## Example conversation demo
-
-This is what a conversation using this scenario should look like:
-
-<video controls width="960" src="https://akapulu-public-assets.s3.amazonaws.com/Conversation-Demo-Normal-Speed.mov"></video>
 
 For custom scenario or UI implementations, see our [enterprise](https://akapulu.com/pricing) plan.
 

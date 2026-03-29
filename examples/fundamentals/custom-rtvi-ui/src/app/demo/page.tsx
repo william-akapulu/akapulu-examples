@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { PipecatClient, RTVIEvent } from "@pipecat-ai/client-js";
-import { PipecatClientProvider, PipecatClientAudio, usePipecatClient } from "@pipecat-ai/client-react";
+import { PipecatClientProvider, PipecatClientAudio, usePipecatClient, usePipecatClientMediaDevices } from "@pipecat-ai/client-react";
 import { DailyProvider, useDaily, useParticipantIds, DailyVideo, useVideoTrack } from "@daily-co/daily-react";
 import { DailyTransport } from "@pipecat-ai/daily-transport";
 import { Mic, MicOff, PhoneOff, Eye, Database, Globe } from "lucide-react";
@@ -192,7 +192,6 @@ function CustomRtviDemo() {
   const [connectErrorCode, setConnectErrorCode] = useState<string | null>(null);
   const [functionCallToast, setFunctionCallToast] = useState<FunctionCallToast | null>(null);
   const [botSpeakingState, setBotSpeakingState] = useState<"idle" | "speaking" | "listening">("idle");
-  const [hasReceivedBotStartedSpeaking, setHasReceivedBotStartedSpeaking] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Mutable per-session flags; refs avoid extra rerenders during streaming.
@@ -245,7 +244,6 @@ function CustomRtviDemo() {
     setConnectError(null);
     setConnectErrorCode(null);
     setBotSpeakingState("idle");
-    setHasReceivedBotStartedSpeaking(false);
 
     const startResponse = await fetch("/api/demo", {
       method: "POST",
@@ -306,7 +304,6 @@ function CustomRtviDemo() {
     setFunctionCallToast(null);
     setIsMicMuted(false);
     setBotSpeakingState("idle");
-    setHasReceivedBotStartedSpeaking(false);
   }, [client]);
 
   const toggleMute = useCallback(() => {
@@ -464,9 +461,6 @@ function CustomRtviDemo() {
       if (message?.type === "bot-speaking-state") {
         const nextState = message?.state === "speaking" ? "speaking" : "idle";
         setBotSpeakingState(nextState);
-        if (nextState === "speaking") {
-          setHasReceivedBotStartedSpeaking(true);
-        }
         return;
       }
 
@@ -543,10 +537,7 @@ function CustomRtviDemo() {
   }, [client]);
 
   const progressPercent = completionPercent;
-  // Keep user transcript rows hidden until Akapulu emits the first "bot started speaking" signal.
-  const visibleTranscripts = hasReceivedBotStartedSpeaking
-    ? transcripts
-    : transcripts.filter((entry) => entry.speaker !== "user");
+  const visibleTranscripts = transcripts;
 
   // ---------------------------------------------------------------------------
   // UI states: idle -> connecting (progress) -> connected (live call)
@@ -852,15 +843,22 @@ function CustomRtviDemo() {
                     </div>
                   )}
                 </div>
-                {visibleTranscripts.map((entry) => (
-                  <div key={entry.id} className={entry.speaker === "user" ? styles.userTranscript : styles.botTranscript}>
-                    <span className={styles.speaker}>{entry.speaker === "user" ? "You" : "Bot"}:</span>
-                    <span className={styles.text}>
-                      {entry.text}
-                      {!entry.isFinal && entry.speaker === "user" && "..."}
-                    </span>
-                  </div>
-                ))}
+                {visibleTranscripts.map((entry) => {
+                  const trimmedText = entry.text.trim();
+                  const isSuppressedDebugUtterance =
+                    entry.speaker === "user" && trimmedText.toLowerCase() === "two...";
+                  if (isSuppressedDebugUtterance) return null;
+
+                  return (
+                    <div key={entry.id} className={entry.speaker === "user" ? styles.userTranscript : styles.botTranscript}>
+                      <span className={styles.speaker}>{entry.speaker === "user" ? "You" : "Bot"}:</span>
+                      <span className={styles.text}>
+                        {entry.text}
+                        {!entry.isFinal && entry.speaker === "user" && "..."}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -868,6 +866,33 @@ function CustomRtviDemo() {
       </div>
     </>
   );
+}
+
+function SpeakerOutputBootstrap() {
+  // Ensure Pipecat audio output has a concrete sink id.
+  // This prevents browser `setSinkId(undefined)` -> NotFoundError.
+  // We intentionally use "default" so audio follows the OS-selected output
+  // device (for example AirPods, speakers, dock audio, etc.).
+  const { selectedSpeaker, updateSpeaker } = usePipecatClientMediaDevices();
+  const defaultSpeakerRequestedRef = useRef(false);
+
+  useEffect(() => {
+    const selectedSpeakerDeviceId =
+      typeof selectedSpeaker === "object" &&
+      selectedSpeaker !== null &&
+      "deviceId" in selectedSpeaker &&
+      typeof selectedSpeaker.deviceId === "string"
+        ? selectedSpeaker.deviceId
+        : "";
+
+    if (selectedSpeakerDeviceId !== "") return;
+    if (defaultSpeakerRequestedRef.current) return;
+    defaultSpeakerRequestedRef.current = true;
+    // One-time bootstrap to avoid unset sink during initial transport startup.
+    updateSpeaker("default");
+  }, [selectedSpeaker, updateSpeaker]);
+
+  return null;
 }
 
 export default function DemoPage() {
@@ -901,6 +926,8 @@ export default function DemoPage() {
     <main className={styles.container}>
       {/* Pipecat provider gives CustomRtviDemo access to realtime client APIs. */}
       <PipecatClientProvider client={client}>
+        {/* Initialize a valid output sink before PipecatClientAudio mounts. */}
+        <SpeakerOutputBootstrap />
         {dailyCallClient ? (
           // DailyProvider supplies media + participant context to Daily hooks.
           <DailyProvider callObject={dailyCallClient as any}>

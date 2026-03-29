@@ -192,6 +192,7 @@ function CustomRtviDemo() {
   const [connectErrorCode, setConnectErrorCode] = useState<string | null>(null);
   const [functionCallToast, setFunctionCallToast] = useState<FunctionCallToast | null>(null);
   const [botSpeakingState, setBotSpeakingState] = useState<"idle" | "speaking" | "listening">("idle");
+  const [hasReceivedBotStartedSpeaking, setHasReceivedBotStartedSpeaking] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Mutable per-session flags; refs avoid extra rerenders during streaming.
@@ -244,6 +245,7 @@ function CustomRtviDemo() {
     setConnectError(null);
     setConnectErrorCode(null);
     setBotSpeakingState("idle");
+    setHasReceivedBotStartedSpeaking(false);
 
     const startResponse = await fetch("/api/demo", {
       method: "POST",
@@ -304,6 +306,7 @@ function CustomRtviDemo() {
     setFunctionCallToast(null);
     setIsMicMuted(false);
     setBotSpeakingState("idle");
+    setHasReceivedBotStartedSpeaking(false);
   }, [client]);
 
   const toggleMute = useCallback(() => {
@@ -461,6 +464,9 @@ function CustomRtviDemo() {
       if (message?.type === "bot-speaking-state") {
         const nextState = message?.state === "speaking" ? "speaking" : "idle";
         setBotSpeakingState(nextState);
+        if (nextState === "speaking") {
+          setHasReceivedBotStartedSpeaking(true);
+        }
         return;
       }
 
@@ -537,10 +543,10 @@ function CustomRtviDemo() {
   }, [client]);
 
   const progressPercent = completionPercent;
-  // Partial user transcripts can arrive while the bot has joined but the call is
-  // still initializing, so hide user rows until the first bot utterance for cleaner UX.
-  const hasBotSpoken = transcripts.some((entry) => entry.speaker === "bot" && entry.text.trim() !== "");
-  const visibleTranscripts = hasBotSpoken ? transcripts : transcripts.filter((entry) => entry.speaker !== "user");
+  // Keep user transcript rows hidden until Akapulu emits the first "bot started speaking" signal.
+  const visibleTranscripts = hasReceivedBotStartedSpeaking
+    ? transcripts
+    : transcripts.filter((entry) => entry.speaker !== "user");
 
   // ---------------------------------------------------------------------------
   // UI states: idle -> connecting (progress) -> connected (live call)

@@ -197,8 +197,6 @@ function CustomRtviDemo() {
   // Mutable per-session flags; refs avoid extra rerenders during streaming.
   // ---------------------------------------------------------------------------
   const transcriptRef = useRef<HTMLDivElement>(null);
-  // Guard flag so reconnects or progress jitter cannot trigger duplicate recording starts.
-  const recordingStartRequestedRef = useRef(false);
   // Toast lifecycle is timer-driven, so timeout id is stored outside render state.
   const functionToastTimeoutRef = useRef<number | null>(null);
   // Color index is render-independent; using a ref avoids unnecessary rerenders.
@@ -232,7 +230,6 @@ function CustomRtviDemo() {
     if (!client) return;
 
     // Reset UI and per-run flags before starting a fresh Akapulu session.
-    recordingStartRequestedRef.current = false;
     setStatus("connecting");
     setTranscripts([]);
     setCallIsReady(false);
@@ -292,7 +289,6 @@ function CustomRtviDemo() {
 
     // Leave transport and reset local state so the next run starts clean.
     await client.disconnect();
-    recordingStartRequestedRef.current = false;
     setStatus("idle");
     setConversationSessionId(null);
     setCallIsReady(false);
@@ -366,41 +362,6 @@ function CustomRtviDemo() {
     if (status !== "connecting") return;
     if (callIsReady) setStatus("connected");
   }, [status, callIsReady]);
-
-  // Optional recording strategy: start once setup crosses 50%.
-  useEffect(() => {
-    if (!daily) {
-      console.info("[recording] Daily call object unavailable; skipping start check");
-      return;
-    }
-    if (completionPercent < 50) return;
-    if (recordingStartRequestedRef.current) {
-      console.info("[recording] Start already requested; skipping duplicate attempt");
-      return;
-    }
-
-    const startRecording = (daily as any).startRecording;
-    if (typeof startRecording !== "function") {
-      // Older SDK/call-object variants may not expose recording APIs.
-      console.error("[recording] startRecording is unavailable on Daily call object");
-      return;
-    }
-
-    console.info("[recording] Attempting cloud recording start", {
-      completionPercent,
-      conversationSessionId,
-      status,
-    });
-    recordingStartRequestedRef.current = true;
-    Promise.resolve(startRecording.call(daily, { type: "cloud" }))
-      .then(() => {
-        console.info("[recording] Cloud recording start request succeeded");
-      })
-      .catch((error: unknown) => {
-        console.error("[recording] start request failed", error);
-        recordingStartRequestedRef.current = false;
-      });
-  }, [daily, completionPercent, conversationSessionId, status]);
 
   // Auto-end when the remote participant leaves.
   useEffect(() => {
